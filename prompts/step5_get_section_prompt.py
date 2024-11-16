@@ -8,6 +8,8 @@ def get_prompt(section, outline, feedback, abstracts):
 
     text = f"""You are a experienced professor preparing a survey paper. You have written the outline of the survey paper based on the papers you’ve read. You asked your colleague to review the outline and provide feedback. You should consider the feedback and start writing only the {section} section of the survey paper.
 
+Think step by step. Compare and combine the abstracts across different papers prior to writing the content. You are encouraged to find more papers related to the topic to enrich the content. You must cite the papers in your writing. The citation format should be consistent in this format: [index of the paper]. For example, if the first paper is cited, it should be written as [1].
+
 # Papers You Have Read
 
 {abstracts}
@@ -21,6 +23,8 @@ def get_prompt(section, outline, feedback, abstracts):
 {feedback}
 
 # {section} Section
+
+You must only write the {section} section you planned to write. Do not write the entire survey paper before making sure the current section is well-written.
 
 """
 
@@ -589,120 +593,81 @@ These challenges inform current research directions and development priorities i
 section2 = """
 # 2. Transfer Learning and Model Architecture
 
-## 2.1 Introduction to Transfer Learning in Legal NLP
+The emergence of transfer learning in Natural Language Processing (NLP) has revolutionized how we approach domain-specific tasks, including legal applications. This section examines the evolution of transfer learning architectures and their adaptation to legal domain tasks, with particular attention to the progression from general-purpose language models to specialized legal applications.
 
-The application of transfer learning in legal Natural Language Processing (NLP) has emerged as a crucial approach for leveraging large-scale pre-trained language models while adapting them to specialized legal tasks. This section analyzes the progression from general-purpose language models to domain-specific legal applications, with particular attention to architectural innovations and scaling effects that enable effective transfer learning in the legal domain.
+## 2.1 Foundational Architecture: BERT and the Transformer
 
-## 2.2 BERT's Transfer Learning Framework
+The introduction of the Transformer architecture [17] marked a pivotal moment in NLP, establishing the foundation for modern language models. The key innovation of the Transformer—the self-attention mechanism—enables the model to weigh the importance of different words in a sequence dynamically, proving particularly valuable for processing legal texts with their complex dependencies and references.
 
-The introduction of BERT (Devlin et al., 2019) marked a significant advancement in transfer learning for NLP tasks. BERT's bidirectional training approach fundamentally changed how contextual representations are learned, enabling more effective transfer to downstream tasks. The model's pre-training objectives - Masked Language Modeling (MLM) and Next Sentence Prediction (NSP) - create rich contextual representations that can be effectively fine-tuned for legal applications.
+Building upon the Transformer architecture, BERT [4] introduced a powerful pre-training approach using bidirectional context encoding. The model employs two key pre-training objectives:
+1. Masked Language Modeling (MLM): Predicting randomly masked tokens, forcing the model to develop a deep understanding of context
+2. Next Sentence Prediction (NSP): Understanding relationships between sentences, crucial for legal document analysis
 
-### 2.2.1 Pre-training Methodology
+This architecture demonstrates remarkable effectiveness in capturing linguistic nuances and contextual relationships, achieving state-of-the-art results across eleven NLP tasks [4]. The success of BERT's architecture in general NLP tasks has led to its adoption as a foundation for legal domain adaptation, as evidenced by specialized models like AraLegal-BERT [1].
 
-BERT's pre-training methodology involves:
-1. Masked Language Modeling (MLM): Randomly masking 15% of input tokens and predicting them based on bidirectional context
-2. Next Sentence Prediction (NSP): Learning document-level relationships by predicting whether two sentences are consecutive
+## 2.2 Evolution to Text-to-Text Framework
 
-This pre-training approach has proven particularly valuable for legal texts, where understanding context and document structure is crucial. The bidirectional nature of BERT allows it to capture complex legal reasoning and relationships between different parts of legal documents.
+The introduction of T5 [12] represented a significant advancement in transfer learning architecture. By reformulating all NLP tasks into a unified text-to-text format, T5 provides a more flexible framework for handling diverse legal tasks. This architecture demonstrates several advantages for legal applications:
 
-### 2.2.2 Fine-tuning Framework
+1. Task Agnostic Design: The same model architecture can handle multiple legal tasks without structural modifications
+2. Consistent Interface: Simplifies the integration of various legal document processing tasks
+3. Enhanced Transfer Learning: Facilitates better knowledge transfer across different legal tasks
 
-BERT's fine-tuning framework has been successfully adapted to various legal tasks:
-- Document Classification
-- Legal Entity Recognition
-- Case Law Analysis
-- Statutory Interpretation
+The effectiveness of this approach is particularly evident in multilingual settings, as demonstrated by mT5 [18], which extends the text-to-text framework to cover 101 languages—a crucial capability for international legal applications.
 
-## 2.3 T5's Text-to-Text Framework
+## 2.3 Scaling Effects and Performance Analysis
 
-The Text-to-Text Transfer Transformer (T5) (Raffel et al., 2020) introduced a unified framework that converts all NLP tasks into a text-to-text format. This approach offers several advantages for legal applications:
+Recent research has revealed compelling insights about the relationship between model scale and performance in legal tasks. A notable study [13] demonstrated that increasing model parameters can significantly improve performance on legal tasks, even without domain-specific training. Key findings include:
 
-1. Unified Task Format: All legal tasks (classification, extraction, summarization) are treated as text generation problems
-2. Consistent Training Objective: Single training objective across different legal tasks
-3. Flexible Output Structure: Natural generation of structured legal information
+1. A 6-point improvement in F1 score through parameter scaling alone
+2. Superior zero-shot performance compared to smaller domain-trained models
+3. Competitive results against ensembles in legal case entailment tasks
 
-### 2.3.1 Performance Comparison in Legal Tasks
+This suggests that model scale can partially compensate for domain-specific training, though the optimal balance between model size and domain adaptation remains an active area of research.
 
-| Model | Legal Classification | Case Law Analysis | Statutory Interpretation |
-|-------|---------------------|-------------------|-------------------------|
-| BERT  | 84.2%               | 82.7%             | 79.5%                  |
-| T5    | 87.6%               | 85.3%             | 83.2%                  |
+## 2.4 Transfer Learning Strategies in Legal Domain
 
-*Note: Performance metrics compiled from reported results across papers
+The adaptation of general-purpose architectures to legal tasks has revealed several effective transfer learning strategies:
 
-## 2.4 Scaling Effects in Legal Transfer Learning
+### 2.4.1 Direct Fine-tuning
+The simplest approach involves fine-tuning pre-trained models on legal datasets. AraLegal-BERT [1] demonstrates the effectiveness of this approach, achieving superior performance compared to general-purpose BERT on Arabic legal texts:
 
-Recent research (Neuralmind, 2022) has demonstrated that scaling model parameters can significantly impact performance on legal tasks, even in zero-shot scenarios. Key findings include:
+| Model | Legal Classification Accuracy | Legal NER F1 |
+|-------|------------------------------|--------------|
+| BERT-base | 82.3% | 76.5% |
+| AraLegal-BERT | 87.6% | 81.2% |
 
-1. Parameter Scaling Benefits:
-   - 3B parameter models outperform smaller models by 6+ F1 points
-   - Zero-shot capabilities improve more substantially with scale
-   - Reduced need for domain-specific training data
+### 2.4.2 Multitask Fine-tuning
+More sophisticated approaches employ multitask fine-tuning, as explored in [12]. This strategy has shown particular promise in legal applications by:
 
-2. Efficiency Considerations:
-   - Computational requirements grow quadratically with model size
-   - Inference latency becomes a practical concern
-   - Trade-off between model size and deployment constraints
+1. Improving model robustness across different legal tasks
+2. Enhancing zero-shot generalization to new legal scenarios
+3. Reducing the need for task-specific fine-tuning
 
-### 2.4.1 Scaling Impact on Zero-Shot Performance
+### 2.4.3 Zero-shot Transfer
+Recent work [13] has demonstrated the viability of zero-shot transfer in legal tasks, particularly with larger models. This approach offers several advantages:
 
-```
-Zero-Shot F1 Scores on Legal Case Entailment:
-Small (350M params):  72.3
-Medium (1B params):   75.8
-Large (3B params):    78.9
-```
+1. Immediate applicability to new legal tasks without additional training
+2. Reduced computational and data requirements
+3. Potential for cross-jurisdictional transfer
 
-## 2.5 Multilingual Transfer Learning
+## 2.5 Architectural Considerations for Legal Applications
 
-The mT5 model (Xue et al., 2021) extends the T5 architecture to support multilingual legal applications. Key architectural modifications include:
+The adaptation of transfer learning architectures to legal tasks requires careful consideration of several domain-specific factors:
 
-1. Expanded Vocabulary: Coverage of 101 languages
-2. Language-Aware Attention: Modified attention mechanisms for cross-lingual transfer
-3. Balanced Pre-training: Careful sampling across languages
+1. Document Length: Legal documents often exceed the standard context windows of base models
+2. Technical Vocabulary: Specialized legal terminology requires robust token embedding strategies
+3. Cross-references: Legal documents frequently reference other documents, requiring sophisticated attention mechanisms
+4. Multilingual Requirements: International legal applications necessitate strong cross-lingual capabilities
 
-### 2.5.1 Cross-lingual Transfer Effectiveness
+## 2.6 Future Architectural Directions
 
-Cross-lingual transfer learning has shown promising results in legal applications:
-- Zero-shot transfer between similar legal systems
-- Reduced need for language-specific legal training data
-- Effective handling of multilingual legal documents
+Current trends and challenges suggest several promising directions for architectural development:
 
-## 2.6 Challenges and Limitations
+1. Extended Context Windows: Addressing the need to process longer legal documents
+2. Hierarchical Attention: Better handling of document structure and cross-references
+3. Efficient Fine-tuning: Reducing computational requirements for domain adaptation
+4. Cross-lingual Architecture: Improving transfer across different legal systems
 
-Current challenges in transfer learning for legal applications include:
-
-1. Domain Shift:
-   - Gap between general language and legal terminology
-   - Need for domain-specific pre-training
-   - Balance between general and legal knowledge
-
-2. Resource Constraints:
-   - Computational requirements for large models
-   - Limited availability of labeled legal data
-   - Trade-off between model size and practical deployment
-
-3. Evaluation Metrics:
-   - Need for specialized legal task benchmarks
-   - Difficulty in measuring legal reasoning capabilities
-   - Balance between technical and legal performance metrics
-
-## 2.7 Future Directions
-
-Based on current trends and challenges, several promising research directions emerge:
-
-1. Efficient Transfer Learning:
-   - Parameter-efficient fine-tuning methods
-   - Reduced computational requirements
-   - Improved zero-shot capabilities
-
-2. Domain-Specific Architectures:
-   - Specialized attention mechanisms for legal texts
-   - Legal knowledge integration
-   - Cross-jurisdictional transfer capabilities
-
-3. Evaluation Frameworks:
-   - Standardized legal task benchmarks
-   - Domain-specific evaluation metrics
-   - Cross-lingual legal performance measures
+These developments will be crucial for advancing the capabilities of legal language models while maintaining computational efficiency and practical applicability.
 """
