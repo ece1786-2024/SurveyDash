@@ -1,9 +1,19 @@
 import pyperclip
 
 from step1_get_initial_prompt import get_prompt, topic
+from step1_get_initial_prompt import output as output1
+from step2_get_criticism_prompt import output as output2
+
 
 def get_revision_prompt(reply, comment):
-    prev_prompt = get_prompt(topic)
+    prev_prompt = get_prompt(topic).split('\n')
+    curr_prompt = """
+You have written the outline of the survey paper based on the papers you’ve read. You asked your colleague to review the outline and provide feedback. Now, you must revise the outline based on the feedback received. You can consider restructuring the outline, adding more details, or improving the coherence between sections. When you realizes mistakes or flaws, acknowledge the realization. Your goal is to enhance the outline to meet the high standards expected by your colleague. Make sure to address the feedback provided and improve the outline accordingly.
+"""
+
+    prev_prompt = prev_prompt[:1] + [curr_prompt] + prev_prompt[1:]
+    prev_prompt = '\n'.join(prev_prompt)
+
     return f"""{prev_prompt}
 
 # Draft Outline
@@ -21,188 +31,75 @@ file = 'The_Impact_of_Large_Language_Modeling_on_Natural_Language_Processing_in_
 # file = 'Multimodal_Large_Language_Models_A_Survey.pdf'
 
 if __name__ == '__main__':
-    prompt = get_revision_prompt(reply="""
-### Survey Paper Outline: LLM Applications in Legal Texts
-
-#### 1. **Introduction**
-   - **Main Idea**: Introduce the significance of applying Large Language Models (LLMs) to legal texts, highlighting their potential to enhance legal understanding, document analysis, and decision-making processes.
-   - **Core Papers**: 1, 3, 5, 7
-   - **Possible Related Papers**: 9, 13, 15
-   - **Content Structure**:
-     - Overview of LLMs and their relevance in the legal domain.
-     - Importance of legal text analysis in jurisprudence and practical applications.
-     - Summary of the advancements and challenges in this field.
-     - Cohesion: Sets the stage for thematic sections on LLM applications and methodologies.
-
----
-
-#### 2. **Domain-Specific Model Development**
-   - **Main Idea**: Examine efforts to develop and fine-tune LLMs specifically for the legal domain.
-   - **Core Papers**: 1, 3, 13
-   - **Possible Related Papers**: 7, 5
-   - **Content Structure**:
-     - Contributions of AraLegal-BERT to Arabic legal text processing.
-     - Legal judgment prediction and specialized models for this task.
-     - Case study: Effectiveness of large-scale zero-shot models like monoT5 in legal entailment.
-     - Comparative analysis of domain-specific versus general-purpose LLMs.
-     - Gaps: Limited cross-linguistic support and resource constraints for domain-specific models.
-     - Cohesion: Transition to multilingual and multitask learning approaches in legal NLP.
-
----
-
-#### 3. **Multilingual and Multitask Approaches**
-   - **Main Idea**: Explore how LLMs handle multilingual legal texts and multitask scenarios to enhance cross-linguistic generalization and zero-shot learning.
-   - **Core Papers**: 8, 13, 15
-   - **Possible Related Papers**: 3, 14
-   - **Content Structure**:
-     - Overview of multitask fine-tuning techniques (e.g., BLOOMZ, mT0).
-     - Analysis of performance improvements in multilingual legal datasets.
-     - Comparison of multilingual LLMs to language-specific models.
-     - Gaps: Challenges in scaling multitask models to include legal-specific nuances.
-     - Cohesion: Lead into bias and fairness in LLMs applied to legal contexts.
-
----
-
-#### 4. **Bias and Fairness in Legal NLP**
-   - **Main Idea**: Investigate the presence of biases in LLMs when applied to legal texts and the methods to mitigate them.
-   - **Core Papers**: 6, 9
-   - **Possible Related Papers**: 7, 1
-   - **Content Structure**:
-     - Discussion on the societal implications of biased LLMs in the legal domain.
-     - Introduction of benchmarks like WinoQueer for detecting and reducing biases.
-     - Examination of the role of legal standards in aligning AI behavior with societal values.
-     - Gaps: Lack of comprehensive benchmarks for bias detection in legal applications.
-     - Cohesion: Establish the importance of ethical AI in the deployment of LLMs for legal purposes.
-
----
-
-#### 5. **Applications and Use Cases**
-   - **Main Idea**: Showcase the practical applications of LLMs in legal contexts, such as document classification, case prediction, and alignment with human values.
-   - **Core Papers**: 1, 3, 10
-   - **Possible Related Papers**: 13, 16
-   - **Content Structure**:
-     - Topic classification of legal documents using LLMs in multiple languages.
-     - Performance metrics and challenges in real-world deployments.
-     - Success stories and limitations in legal text classification and entailment tasks.
-     - Cohesion: Relate the applications back to ethical and technical considerations.
-
----
-
-#### 6. **Challenges and Future Directions**
-   - **Main Idea**: Identify challenges in applying LLMs to legal texts and propose future research directions.
-   - **Core Papers**: 3, 7, 5
-   - **Possible Related Papers**: 15, 9
-   - **Content Structure**:
-     - Discussion on the gap between machine and human performance.
-     - Open problems in dataset availability, multilingual support, and explainability.
-     - Future opportunities in cross-domain learning and better societal alignment.
-     - Cohesion: Conclude by tying these challenges to the introductory vision for LLMs in legal domains.
-
----
-
-#### 7. **Conclusion**
-   - **Main Idea**: Summarize the insights gained from the survey and reinforce the importance of advancing LLM applications in the legal domain.
-   - **Core Papers**: All relevant papers referenced across sections.
-   - **Possible Related Papers**: N/A
-   - **Content Structure**:
-     - Recap of key advancements in LLMs for legal text analysis.
-     - Emphasis on interdisciplinary collaboration between NLP researchers and legal experts.
-     - Closing thoughts on the ethical, technical, and practical impacts of this research field. 
-
-This structured outline organizes the survey around core themes, providing a cohesive narrative that captures both the current state and future potential of LLMs in legal texts.
-    """, comment="""
-# Comprehensive Review of Survey Paper Outline: LLM Applications in Legal Texts
-
-## Overall Assessment: Revision Needed
-
-### Structural Strengths
-1. Clear thematic organization with logical progression
-2. Consistent section formatting
-3. Good attention to cohesion between sections
-
-### Major Issues Requiring Revision
-
-#### 1. Introduction Section
-- **Critical Gap**: Missing foundational papers (4, 17) that establish the basis of transformer architecture and BERT
-- **Improvement Needed**: Include technical foundation before jumping to legal applications
-- **Action Item**: Restructure to include:
-  - Brief history of transformer-based models
-  - Transition to legal domain applications
-  - Current challenges and opportunities
-
-#### 2. Domain-Specific Model Development
-- **Misalignment**: Over-emphasis on AraLegal-BERT while missing broader context
-- **Missing Connection**: No clear link to Paper 4 (original BERT) for comparative analysis
-- **Action Item**: Expand section to include:
-  - Comparison with base BERT architecture
-  - Systematic analysis of domain adaptation techniques
-  - Clear metrics for performance evaluation
-
-#### 3. Multilingual and Multitask Approaches
-- **Technical Oversight**: Missing critical discussion from Paper 18 (mT5)
-- **Integration Gap**: Need stronger connection to Papers 2 and 12
-- **Action Item**: Include:
-  - Detailed analysis of prompt-based approaches
-  - Cross-lingual transfer mechanisms
-  - Comparative analysis of different multilingual models
-
-#### 4. Bias and Fairness Section
-- **Scope Issue**: Over-reliance on WinoQueer (Paper 6) which isn't specifically legal-focused
-- **Missing Context**: Insufficient integration with Paper 9's legal informatics approach
-- **Action Item**: Refocus section on:
-  - Legal-specific bias concerns
-  - Regulatory compliance
-  - Ethical frameworks in legal AI
-
-#### 5. Applications Section
-- **Coverage Gap**: Insufficient discussion of transfer learning (Paper 12)
-- **Integration Need**: Missing connection to Paper 16's classification framework
-- **Action Item**: Expand to include:
-  - Systematic comparison of different application approaches
-  - Real-world deployment considerations
-  - Performance metrics across different legal tasks
-
-### Technical Accuracy Concerns
-1. Several papers are cited out of context
-2. Missing technical details from key methodological papers
-3. Insufficient discussion of evaluation metrics from Paper 3
-
-### Recommendations for Improvement
-
-1. **Technical Foundation**
-   - Add section on fundamental LLM architectures
-   - Include clear progression from general to legal-specific models
-
-2. **Methodology Coverage**
-   - Expand discussion of training approaches
-   - Include detailed analysis of evaluation metrics
-   - Add cross-model comparisons
-
-3. **Literature Integration**
-   - Better incorporate Papers 11, 12, and 14 for technical depth
-   - Strengthen connections between sections
-   - Add comparative analysis across different approaches
-
-4. **Applications Framework**
-   - Develop clearer categorization of applications
-   - Include performance metrics
-   - Add implementation considerations
-
-### Required Reading
-Before revision, carefully review:
-1. Paper 4 (BERT) - fundamental architecture
-2. Paper 17 (Attention) - technical foundation
-3. Paper 12 (T5) - transfer learning framework
-4. Paper 18 (mT5) - multilingual approaches
-
-## Grade: Revision Needed
-
-The outline shows promise but requires substantial revision to meet the standards expected of a comprehensive survey paper. Focus particularly on technical accuracy, proper paper integration, and methodological clarity.
-
-### Next Steps
-1. Revise structure incorporating feedback
-2. Strengthen technical foundations
-3. Better integrate all provided papers
-4. Resubmit with detailed attention to evaluation metrics and comparative analysis
-    """)
+    prompt = get_revision_prompt(reply=output1, comment=output2)
     pyperclip.copy(prompt)
+
+output = """
+# Revised Outline for "LLM Applications in Legal Texts"
+
+## 1. Introduction
+- **Main Idea:** Establish the foundational context for the application of Large Language Models (LLMs) in the legal domain, focusing on the challenges and opportunities these models present.
+- **Core Papers:** 1, 3, 5, 7
+- **Possible Related Papers:** 9, 10
+- **Content Structure:** 
+  - Introduction to LLMs and their significance in interpreting complex legal texts.
+  - Definition of key terminologies such as "LLMs" and brief introduction to their common uses in the legal domain (inspiration from paper 1 and 7).
+  - Exploration of the current gap in literature regarding LLM adaptation in legal contexts and the objectives of this survey.
+  - Mention specific research insights from the core papers addressing these gaps.
+  - **Cohesion Across Sections:** Sets the stage by outlining key themes that will be expanded in subsequent sections, particularly focused on models, methodologies, and challenges.
+
+## 2. Pre-trained Language Models for Legal Texts
+- **Main Idea:** Discuss current pre-trained language models developed for legal text processing and compare their effectiveness.
+- **Core Papers:** 1, 3, 5
+- **Possible Related Papers:** 13, 16
+- **Content Structure:** 
+  - Detailed comparison of AraLegal-BERT and similar models (1, 3) with traditional models like BERT (4).
+  - Analysis of datasets (from paper 1 and 3) utilized in testing these models for different legal tasks.
+  - Discussion of the performance in various linguistic and regional contexts and the specific legal tasks they excel in.
+  - **Cohesion Across Sections:** Lead into challenges faced by introducing specific shortcomings or areas lacking robust performance metrics, segueing into innovative techniques.
+
+## 3. Innovative Approaches and Techniques
+- **Main Idea:** Examine innovative techniques such as multitask learning, transfer learning, and bias mitigation to improve legal text processing.
+- **Core Papers:** 3, 6, 8
+- **Possible Related Papers:** 14, 15, 18
+- **Content Structure:** 
+  - Explore how multitask learning (3, 8) has been used to enhance adaptability and performance in legal contexts.
+  - Assess bias-mitigation strategies like those seen in WinoQueer (6) and their impact on results.
+  - Evaluate how these approaches offer solutions to limitations identified in earlier sections.
+  - **Cohesion Across Sections:** Link these innovations to real-world applications in the following section, indicating their practical benefits and ongoing research initiatives.
+
+## 4. Applications and Real-world Use Cases
+- **Main Idea:** Highlight successful applications of LLMs within the legal domain and illustrate the impact on legal workflows.
+- **Core Papers:** 3, 10, 13
+- **Possible Related Papers:** 5, 16
+- **Content Structure:** 
+  - Present detailed case studies such as Legal Judgment Prediction (3) or Topic Classification in Public Affairs (10) using LLMs.
+  - Highlight comparative advantages over traditional legal methods and the transformative effect on legal processes.
+  - Discuss the scope for improvement and the essential collaboration between AI and legal practitioners for optimal integration.
+  - **Cohesion Across Sections:** Provide a segue to challenges and limitations, pointing out where these applications may not yet meet expectations.
+
+## 5. Challenges, Limitations, and Future Directions
+- **Main Idea:** Identify technical and ethical challenges and propose future research directions for LLM applications in legal texts.
+- **Core Papers:** 7, 9, 13
+- **Possible Related Papers:** 16, 17
+- **Content Structure:**
+  - Discuss limitations in data availability, model interpretability, and ethical issues using insights from papers 7 and 9.
+  - Consider societal implications and the interplay between law and code as a guidance mechanism (9).
+  - Propose strategies for future research focused on enhancing data diversity, accountability, and interpretability of LLMs.
+  - **Cohesion Across Sections:** This section synthesizes the survey's findings and points towards actionable insights, correlating with future directions in concluding thoughts.
+
+## 6. Conclusion
+- **Main Idea:** Summarize the main findings of the survey, reiterating the role of LLMs in transforming legal text analysis, while emphasizing the need for continued interdisciplinary collaboration.
+- **Core Papers:** 1, 3, 5
+- **Possible Related Papers:** 9, 10
+- **Content Structure:** 
+  - Consolidate insights regarding state-of-the-art LLM applications in the legal field.
+  - Summarize key advancements, pressing challenges, and the need for interdisciplinary research partnerships.
+  - Reflect on the evolving landscape of LLMs in legal contexts and pinpoint areas ripe for continued exploration and development.
+  - **Cohesion Across Sections:** Reinforce themes and insights discussed throughout the paper, ensuring a resonant conclusion that echoes the introduction.
+
+### Additional Enhancements:
+- Criteria for selecting core and related papers are now clarified within each section, based on thematic relevance and depth of analysis within the abstracts.
+- Enhanced narrative transitions now provide smoother progression between sections, underscoring the continual thread of survey content.
+- Incorporation of remaining feedback ensures robust structures that critically evaluate and contextualize all reviewed papers.
+"""

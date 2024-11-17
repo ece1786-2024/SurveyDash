@@ -1,19 +1,21 @@
 import pyperclip
 
 from step1_get_initial_prompt import get_prompt, topic
+from step1_get_initial_prompt import output as output1
 
-def get_next_prompt(reply):
+
+def get_feedback_prompt(reply):
     prev_prompt = get_prompt(topic).split('\n')
     prev_prompt = '\n'.join(prev_prompt[2:])
 
     instruction = """You are a experienced professor and are extremely demanding and expects perfection from your students. You are reviewing the outline of a survey paper created by a student. Your task is to provide constructive feedback on the outline to help the student improve the structure and content of the survey paper.
 
-You should make sure the student's outline is well-structured, coherent, and effectively conveys the main ideas and contributions of the selected papers. The student must mention all the core papers and all possible related papers in each section, but must not make up any content that is not included in the abstracts of the papers.
+You should make sure the student's outline is well-structured, coherent, and effectively conveys the main ideas and contributions of the selected papers. The student must mention all the related papers in each section, but must not make up any content that is not included in the abstracts of the papers.
 
-You must provide detailed feedback on the student's outline, highlighting areas for improvement and suggesting ways to enhance the clarity, coherence, and depth of the survey. Your feedback should be specific, actionable, and focused on guiding the student towards a more comprehensive and well-organized survey paper.
+You must provide detailed feedback on the student's outline, highlighting areas for improvement and suggesting ways to enhance the clarity, coherence, and depth of the survey. Think critically about the arrangement of sections and the connections between papers. Your feedback should be specific, actionable, and focused on guiding the student towards a more comprehensive and well-organized survey paper.
 
-You will grade the student's outline. You are encouraged to provide detailed feedback to help the student revise and improve the outline effectively. Only give them a pass if the outline meets your high standards and expectations.
-    """
+You will grade the student's outline. Only give them a pass if the outline meets your high standards and expectations. You are encouraged to provide detailed feedback to help the student revise and improve the outline effectively. You must comment on the structure of the outline, ensuring that the student is on the right track to create a successful survey paper. Give general advice on how to improve the outline and then provide specific feedback on each section.
+"""
 
     return f"""{instruction}
 
@@ -27,9 +29,10 @@ You will grade the student's outline. You are encouraged to provide detailed fee
 
 # Grade
 
-- [ ] Pass
-- [ ] Revision Needed
-- [ ] Fail
+- [ ] Accept
+- [ ] Minor Revision
+- [ ] Major Revision
+- [ ] Reject
 
 # Feedback
 
@@ -41,94 +44,53 @@ file = 'The_Impact_of_Large_Language_Modeling_on_Natural_Language_Processing_in_
 # file = 'Multimodal_Large_Language_Models_A_Survey.pdf'
 
 if __name__ == '__main__':
-    prompt = get_next_prompt(reply="""
-### Survey Paper Outline: LLM Applications in Legal Texts
-
-#### 1. **Introduction**
-   - **Main Idea**: Introduce the significance of applying Large Language Models (LLMs) to legal texts, highlighting their potential to enhance legal understanding, document analysis, and decision-making processes.
-   - **Core Papers**: 1, 3, 5, 7
-   - **Possible Related Papers**: 9, 13, 15
-   - **Content Structure**:
-     - Overview of LLMs and their relevance in the legal domain.
-     - Importance of legal text analysis in jurisprudence and practical applications.
-     - Summary of the advancements and challenges in this field.
-     - Cohesion: Sets the stage for thematic sections on LLM applications and methodologies.
-
----
-
-#### 2. **Domain-Specific Model Development**
-   - **Main Idea**: Examine efforts to develop and fine-tune LLMs specifically for the legal domain.
-   - **Core Papers**: 1, 3, 13
-   - **Possible Related Papers**: 7, 5
-   - **Content Structure**:
-     - Contributions of AraLegal-BERT to Arabic legal text processing.
-     - Legal judgment prediction and specialized models for this task.
-     - Case study: Effectiveness of large-scale zero-shot models like monoT5 in legal entailment.
-     - Comparative analysis of domain-specific versus general-purpose LLMs.
-     - Gaps: Limited cross-linguistic support and resource constraints for domain-specific models.
-     - Cohesion: Transition to multilingual and multitask learning approaches in legal NLP.
-
----
-
-#### 3. **Multilingual and Multitask Approaches**
-   - **Main Idea**: Explore how LLMs handle multilingual legal texts and multitask scenarios to enhance cross-linguistic generalization and zero-shot learning.
-   - **Core Papers**: 8, 13, 15
-   - **Possible Related Papers**: 3, 14
-   - **Content Structure**:
-     - Overview of multitask fine-tuning techniques (e.g., BLOOMZ, mT0).
-     - Analysis of performance improvements in multilingual legal datasets.
-     - Comparison of multilingual LLMs to language-specific models.
-     - Gaps: Challenges in scaling multitask models to include legal-specific nuances.
-     - Cohesion: Lead into bias and fairness in LLMs applied to legal contexts.
-
----
-
-#### 4. **Bias and Fairness in Legal NLP**
-   - **Main Idea**: Investigate the presence of biases in LLMs when applied to legal texts and the methods to mitigate them.
-   - **Core Papers**: 6, 9
-   - **Possible Related Papers**: 7, 1
-   - **Content Structure**:
-     - Discussion on the societal implications of biased LLMs in the legal domain.
-     - Introduction of benchmarks like WinoQueer for detecting and reducing biases.
-     - Examination of the role of legal standards in aligning AI behavior with societal values.
-     - Gaps: Lack of comprehensive benchmarks for bias detection in legal applications.
-     - Cohesion: Establish the importance of ethical AI in the deployment of LLMs for legal purposes.
-
----
-
-#### 5. **Applications and Use Cases**
-   - **Main Idea**: Showcase the practical applications of LLMs in legal contexts, such as document classification, case prediction, and alignment with human values.
-   - **Core Papers**: 1, 3, 10
-   - **Possible Related Papers**: 13, 16
-   - **Content Structure**:
-     - Topic classification of legal documents using LLMs in multiple languages.
-     - Performance metrics and challenges in real-world deployments.
-     - Success stories and limitations in legal text classification and entailment tasks.
-     - Cohesion: Relate the applications back to ethical and technical considerations.
-
----
-
-#### 6. **Challenges and Future Directions**
-   - **Main Idea**: Identify challenges in applying LLMs to legal texts and propose future research directions.
-   - **Core Papers**: 3, 7, 5
-   - **Possible Related Papers**: 15, 9
-   - **Content Structure**:
-     - Discussion on the gap between machine and human performance.
-     - Open problems in dataset availability, multilingual support, and explainability.
-     - Future opportunities in cross-domain learning and better societal alignment.
-     - Cohesion: Conclude by tying these challenges to the introductory vision for LLMs in legal domains.
-
----
-
-#### 7. **Conclusion**
-   - **Main Idea**: Summarize the insights gained from the survey and reinforce the importance of advancing LLM applications in the legal domain.
-   - **Core Papers**: All relevant papers referenced across sections.
-   - **Possible Related Papers**: N/A
-   - **Content Structure**:
-     - Recap of key advancements in LLMs for legal text analysis.
-     - Emphasis on interdisciplinary collaboration between NLP researchers and legal experts.
-     - Closing thoughts on the ethical, technical, and practical impacts of this research field. 
-
-This structured outline organizes the survey around core themes, providing a cohesive narrative that captures both the current state and future potential of LLMs in legal texts.
-    """)
+    prompt = get_feedback_prompt(reply=output1)
     pyperclip.copy(prompt)
+
+output = """
+## General Feedback
+
+The outline presented covers key areas relevant to the application of Large Language Models (LLMs) in legal texts, but there are significant areas needing improvement to meet the high standards expected. While the student demonstrates an understanding of grouping related papers and setting thematic sections, the cohesion and depth of analysis require enhancement. A more robust linkage of themes across sections and a thorough evaluation of each paper’s contributions and their interrelations are essential. More specificity in the content descriptions and clarity in how the papers support your discussions will strengthen the coherence and quality of the paper.
+
+### Specific Feedback on Each Section
+
+### 1. Introduction
+- **Comments:** The selection of core and possible related papers seems appropriate for providing a background on LLM usage in legal texts. However, further specificity regarding the challenges and gaps in existing research as documented in the papers should be mentioned.
+- **Suggestions:** Provide clear definitions of terminologies such as LLMs within the legal context using insights from the related papers. Furthermore, clarify what unique perspectives this survey hopes to contribute to the field as identified in the abstracts.
+
+### 2. Pre-trained Language Models for Legal Texts
+- **Comments:** The section aims to discuss pre-trained models like AraLegal-BERT. However, the abstraction level needs refinement.
+- **Suggestions:** More detailed comparison and contrast of the capabilities and limitations from each core paper must be included. Specify the nature of the datasets and tasks these models were tested on (information available in abstracts) and assess their competitive performance in legal tasks across different regions or languages to provide deeper insight.
+
+### 3. Innovative Approaches and Techniques
+- **Comments:** This section touches on promising technical directions but lacks depth regarding how these approaches alter or improve existing legal text processing methodologies.
+- **Suggestions:** Delve more deeply into how multitask learning and bias mitigation (papers 6, 3, 8) directly improve current models over existing baselines. Illustrate these findings using results and reasoning outlined in the abstracts that might point to particular strengths or weaknesses.
+
+### 4. Applications and Real-world Use Cases
+- **Comments:** While examples of LLM applications in the legal domain are outlined, this section requires greater elaboration on how LLMs practically transform workflows.
+- **Suggestions:** Include more precise case studies from the abstracts to showcase LLM application results and their implications on legal outcomes and processes. Construct a narrative that emphasizes the advantages of using LLMs over traditional methods in the real-world context, as highlighted in these papers.
+
+### 5. Challenges, Limitations, and Future Directions
+- **Comments:** This section appropriately addresses challenges but can expand to offer more concrete evidence-based conclusions on weaknesses or gaps in the literature and technological constraints.
+- **Suggestions:** Discuss specific instances where current models fall short in real-world legal applications (referring to data in abstracts). Use examples from the papers to consider how these challenges might be approached to complement or extend the existing literature.
+
+### 6. Conclusion
+- **Comments:** The conclusion points are aligned with the primary focus of the survey but need to reinforce key findings effectively.
+- **Suggestions:** Synthesize insights from individual sections to provide a cohesive final message. Stresses should be put on the justified merits of interdisciplinary collaboration and address opportunities for technological enhancements, backed with insights from core papers.
+
+### Grade
+
+- [ ] Accept
+- [ ] Minor Revision
+- [x] Major Revision
+- [ ] Reject
+
+### Additional Suggestions
+
+- Ensure that each section doesn’t merely summarize findings but evaluates the contributions of each paper critically.
+- Clarify the criteria used to classify core and possible related papers in each section.
+- Enhance transitions between sections to develop a continuous and engaging narrative for the reader.
+- Integrate some diagrams or tables in the full draft for better illustration and comparison where applicable.
+
+With these improvements, the outline can achieve a level of thoroughness and clarity that matches high academic standards expected in survey papers.
+"""
