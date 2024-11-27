@@ -1,0 +1,52 @@
+## Feedback on Revised Outline
+
+### General Feedback
+
+Your outline demonstrates a clear understanding of the thematic sections necessary for a comprehensive survey on LLM applications in legal texts. However, there are areas where you can enhance the structure and content to ensure a more cohesive and insightful paper. Below are specific suggestions for each section:
+
+### 1. Introduction
+
+- **Content Structure:** 
+  - While you have a good start, ensure that the introduction not only highlights the importance of LLMs in legal contexts but also succinctly outlines the specific challenges and opportunities they present. This will set a strong foundation for the rest of the paper.
+  - Clarify the scope of the survey and the criteria for selecting the core and related papers. This will help readers understand the focus and limitations of your review.
+
+### 2. Domain-Specific LLMs for Legal Texts
+
+- **Content Structure:**
+  - When discussing AraLegal-BERT and other models, provide more context on why domain-specific adaptations are necessary. What unique challenges do legal texts present that general LLMs struggle with?
+  - The comparison between domain-specific models and general LLMs should be more detailed. Highlight specific performance metrics or case studies that illustrate the advantages or limitations of each approach.
+  - Ensure that the identification of research gaps is based on the analysis of the core papers. This will provide a solid basis for your conclusions and recommendations.
+
+### 3. Multilingual and Cross-Lingual Capabilities
+
+- **Content Structure:**
+  - Expand on the specific legal tasks where multilingual models like BLOOM and mT5 excel. Are there particular languages or legal systems where these models perform better or worse?
+  - Discuss the implications of cross-lingual generalization in more depth. How does this capability impact legal practitioners or the accessibility of legal information across different jurisdictions?
+  - Address any unresolved issues or challenges that multilingual models face in the legal domain, such as cultural nuances or legal terminology differences.
+
+### 4. Legal Reasoning and Societal Values in LLMs
+
+- **Content Structure:**
+  - Provide a clearer explanation of the "Law Informs Code" approach. How does this methodology practically align AI behavior with human values, and what are its limitations?
+  - When discussing the challenges of embedding legal reasoning, consider including examples or case studies that illustrate these difficulties.
+  - Suggest potential frameworks or methodologies for integrating legal standards into AI systems, drawing from the core papers.
+
+### 5. Future Directions and Ethical Considerations
+
+- **Content Structure:**
+  - Clearly articulate the open challenges and research gaps, ensuring they are directly linked to the findings from the core papers.
+  - The discussion on ethical considerations should be more comprehensive. Consider including issues like data privacy, accountability, and the potential for misuse of LLMs in legal contexts.
+  - Provide actionable recommendations for future research and practice, grounded in the insights gained from the survey.
+
+### 6. Conclusion
+
+- **Content Structure:**
+  - Ensure that the conclusion not only summarizes the key findings but also reflects on the broader implications of LLMs in the legal domain.
+  - Consider ending with a call to action or a vision for the future, emphasizing the potential impact of LLMs on legal practice and society.
+
+### Cohesion Across Sections
+
+- Ensure that each section transitions smoothly into the next. Use connecting sentences or paragraphs to highlight how the insights from one section inform the discussions in the subsequent sections.
+- Consider creating a visual roadmap or diagram to illustrate the connections between sections and the overall narrative of the survey.
+
+By addressing these suggestions, you will enhance the clarity, coherence, and depth of your survey paper, providing a valuable resource for understanding the applications of LLMs in legal texts.

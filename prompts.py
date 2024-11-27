@@ -136,9 +136,38 @@ You **must** think step-by-step when writing the subsection.
 5. Do not report your thought process, return the draft only. 
 
 # The topic of the survey paper is: {topic}
-# The current section you are working on is: {section_name}.
-# The index number of the provided research paper is {index_num}.
+# The current section you are working on is: {section}.
 
-## Draft
+You must only write the {section} section you planned to write. Do not write the entire survey paper before making sure the current section is well-written.
+
+
+## Outline
+{outline}
+
+## Papers
 """
 
+
+_section_advice_prompt = """
+    The following are two sections from a rough draft of a survey paper. You are acting as an editor before the author can publish their paper.
+    Provide suggestions on improving the quality of these sections. Find places that are repetitive, where not enough detail is provided, or ideas that can be combined to make the sections more concise.
+    You are not limited to these types of suggestions. For each suggestion, clearly state what needs to be modified and how it should be modified. Also, list out your reasons for each modification:
+
+    Section 1:
+    {section1}
+
+    Section 2:
+    {section2}
+    """
+    
+    
+_section_refine_prompt = """
+    You are the author of the survey paper, and you are doing your final edits before submitting the paper to a conference. There are suggestion provided by editors. You need to follow the suggestions to modify your paper or your paper will not be accepted by the conference. You also need to write the final paper in a formal format of a survey paper. You would submit this draft to the conference. It is also important to note that the writings provided to you is only a part of the survey paper. You should edit the writing according to the section title only. You also need to provide numbered sections. Ignore the context in your memory from previous chats. Make sure you only use the information from this prompt. It is important to note that the following writing is only part of the survey paper. Do not treat it as an entire survey paper.
+    Section 1:
+    {section1}
+
+    Section 2:
+    {section2}
+    
+    ## Suggestions
+    """
