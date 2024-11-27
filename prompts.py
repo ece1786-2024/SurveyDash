@@ -171,3 +171,26 @@ _section_refine_prompt = """
     
     ## Suggestions
     """
+_combined_section_suggestion_prompt = """
+    The following are the rough draft of a survey paper. You are acting as an editor before the author can publish their paper.
+    Provide suggestions on improving the quality of these sections. Find places that are repetitive, where not enough detail is provided, or ideas that can be combined to make the sections more concise.
+    You are not limited to these types of suggestions. For each suggestion, clearly state what needs to be modified and how it should be modified. Also, list out your reasons for each modification.
+    Write the title of the section that you are providing feedback on before you provide the suggestion.
+    
+    Output Format:
+    For each section, your feedback should follow this format:
+
+    Section Title: [Title of the section]
+    Suggestion 1:
+    What to modify: [Clearly state the part of the text that needs modification].
+    How to modify: [Provide the exact changes or general advice].
+    Reason: [Explain why the change is necessary].
+    Suggestion 2:
+    What to modify: [Clearly state the part of the text that needs modification].
+    How to modify: [Provide the exact changes or general advice].
+    Reason: [Explain why the change is necessary].
+    Other suggestions will follow the same suggestion as suggestion 1 and suggestion 2
+    Remember to also provide suggestions for the Conclusion paragraph
+    Full rough draft of survey paper:
+    
+"""

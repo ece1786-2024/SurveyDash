@@ -1,3 +1,5 @@
+## Conclusion
+
 In this survey, we have explored the transformative potential of Large Language Models (LLMs) in the legal domain, highlighting their significant impact on legal text analysis and practice. The survey has delved into various aspects of LLM applications, including domain-specific adaptations, multilingual capabilities, legal reasoning, and ethical considerations. Through the examination of core papers and related works, several key insights and future directions have emerged.
 
 Firstly, the development of domain-specific LLMs, such as AraLegal-BERT, demonstrates the necessity of tailoring models to handle the unique challenges presented by legal texts, including complex terminologies and jurisdiction-specific nuances [1]. AraLegal-BERT, a bidirectional encoder Transformer-based model, has been fine-tuned and optimized specifically for Arabic legal texts, showcasing improved accuracy over general-purpose BERT models in legal applications. This underscores the importance of customization in achieving accurate and reliable results in legal applications [1; 3].
