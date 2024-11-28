@@ -1,0 +1,30 @@
+AraLegal-BERT A pretrained language model for Arabic Legal text
+PromptSource An Integrated Development Environment and Repository for Natural Language Prompts
+Language models are few-shot learners
+Deep learning in law early adaptation and legal word embeddings trained on large corpora
+ChatGPT Goes to Law School January 23 2023
+Scaling instruction-finetuned language models
+Chatlaw Open-source legal large language model with integrated external knowledge bases
+A Survey on Legal Judgment Prediction Datasets Metrics Models and Challenges
+Bert Pre-training of deep bidirectional transformers for language understanding
+State of the Art in Artificial Intelligence applied to the Legal Domain
+Towards WinoQueer Developing a Benchmark for Anti-Queer Bias in Large Language Models
+Legal Textual Entailment Using Ensemble of Rule-Based and BERT-Based Method with Data Augmentation by Related Article Generation
+ChatGPT by OpenAI The End of Litigation Lawyers Available at SSRN httpdx
+Natural Language Processing in the Legal Domain
+ChatGPT Generative AI Systems as Quasi-Expert Legal Advice Lawyers - Case Study Considering Potential Appeal Against Conviction of Tom Hayes
+Crosslingual Generalization through Multitask Finetuning
+Law Informs Code A Legal Informatics Approach to Aligning Artificial Intelligence with Humans
+Leveraging Large Language Models for Topic Classification in the Domain of Public Affairs
+Learning Transferable Visual Models From Natural Language Supervision
+Exploring the limits of transfer learning with a unified text-to-text transformer
+Billions of parameters are worth more than in-domain training data A case study in the legal case entailment task
+Multitask Prompted Training Enables Zero-Shot Task Generalization
+Bloom A 176b-parameter openaccess multilingual language model
+Prompting Large Language Models with Answer Heuristics for Knowledge-based Visual Question Answering
+Text Classification via Large Language Models
+Unifying language learning paradigms
+Attention Is All You Need
+mT5 A Massively Multilingual Pretrained Text-to-Text Transformer
+Extractive text summarization using deep learning approach
+HUKB at the COLIEE 2022 statute law task
