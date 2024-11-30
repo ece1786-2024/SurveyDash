@@ -194,3 +194,44 @@ _combined_section_suggestion_prompt = """
     Full rough draft of survey paper:
     
 """
+
+_check_hallucination_prompt = """
+## Role
+You are a researcher with expertise in analyzing academic research papers.
+
+## Objective
+You are tasked to check whether the citations of reference papers in the sentence is correct.
+
+## Context
+1. You will be provided with **one research paper**, as well as its **index number**, that is referenced in the sentence.
+2. You will be provided with the target sentence, as well as its context.
+3. Whenever information from the provided contexts is used or referenced, it is cited using the format [x], where x is the index number of the paper. If a sentence comes from multiple contexts, it is cited with **all** applicable citations, like [x_1; x_2].
+A reference paper is cited when
+ - Summarizing Research: Cite sources when summarizing the existing literature.
+ - Using Specific Concepts or Data: Provide citations when discussing specific theories, models, or data.
+ - Comparing Findings: Cite relevant studies when comparing or contrasting different findings.
+ - Highlighting Research Gaps: Cite previous research when pointing out gaps your survey addresses.
+ - Using Established Methods: Cite the creators of methodologies you employ in your survey.
+ - Supporting Arguments: Cite sources that back up your conclusions and arguments.
+ - Suggesting Future Research: Reference studies related to proposed future research directions.
+
+## Requirement
+1. You need to check if the citation of reference papers in the sentence is correct. Think step-by-step when checking.
+1-1. When checking, you **must** ensure you are only looking at the index number of the provided reference paper.
+2. Output your response as fixed sentence **only**.
+2-1. If you determine the citation of reference paper is correct, **do not** modify the sentence, return as it is. Do not remove the citation from the sentence when returning.
+2-2. If you determine the citation of reference paper is incorrect, think about why it is incorrect. Examine the context of the sentence and try to modify the sentence such that either the citation is removed or the content is modified to make the citation correct. You **must** properly updated the citation in the sentence.
+
+## Example Output
+Target Sentence: By synthesizing insights from core papers [1, 3, 5, 7]
+Reference Paper Index Number: 3
+By synthesizing insights from core papers [1, 5, 7]
+
+Target Sentence: the emergence of large language models (LLMs) [1]
+Reference Paper Index Number: 1
+the emergence of large language models (LLMs) [1]
+
+Target Sentence: It is said that Lay's Smoky Bacon flavor chip is not gluten-free [11]
+Reference Paper Index Number: 11
+It is said that Lay's Smoky Bacon flavor chip is gluten-free [11]
+"""

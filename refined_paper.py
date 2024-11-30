@@ -1,5 +1,5 @@
-# from openai import OpenAI
-import openai
+from openai import OpenAI
+# import openai
 
 from prompts import (_outline_generation_prompt,
                      _outline_revision_prompt,
@@ -8,14 +8,19 @@ from prompts import (_outline_generation_prompt,
                      _section_writer_prompt,
                      _section_advice_prompt,
                      _section_refine_prompt,
-                     _combined_section_suggestion_prompt)
+                     _combined_section_suggestion_prompt,
+                     _check_hallucination_prompt)
+import tiktoken
+import time
+import pymupdf4llm
+import urllib.request
 import json
 import re
 import os
 
 # client = OpenAI(api_key='')
-client = ""
-openai.api_key = "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"
+# client = ""
+# openai.api_key = "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"
 
 def load_abstracts(filename):
     with open(f'{filename}.json', 'r') as f:
@@ -26,30 +31,44 @@ def load_abstracts(filename):
         text += f"{i + 1}\n{d['title']}\n{abstract}\n\n"
     return text
 
-# def make_chat_request(client, messages, model="gpt-4o", temperature=0.3, top_p=0.5):
-#     try:
-#         response = client.chat.completions.create(
-#             model=model,
-#             messages=messages,
-#             temperature=temperature,
-#             top_p=top_p
-#         )
-#         return response.choices[0].message.content
-#     except Exception as e:
-#         raise Exception(f"Error in OpenAI API call: {e}")
+def load_full_content(filename, pdf_directory="./reference_papers"):
+    with open(f'{filename}.json', 'r') as f:
+        data = json.load(f)
+    full_content = {}
+    need_to_download = False
+    if not os.path.exists(pdf_directory):
+        need_to_download = True
+    for i, d in enumerate(data):
+        if need_to_download:
+            urllib.request.urlretrieve(d["url"].replace("abs", "pdf"), f"{pdf_directory}/{d['title']}.pdf")
+        curr_content = pymupdf4llm.to_markdown(f"{pdf_directory}/{d['title']}.pdf")
+        full_content[i+1] = curr_content
+    return full_content
 
-def make_chat_request(client, messages, model="gpt-4", temperature=0.3, top_p=0.5):
-
+def make_chat_request(client, messages, model="gpt-4o", temperature=0.3, top_p=0.5):
     try:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model=model,
             messages=messages,
             temperature=temperature,
             top_p=top_p
         )
-        return response.choices[0].message['content']
+        return response.choices[0].message.content
     except Exception as e:
         raise Exception(f"Error in OpenAI API call: {e}")
+
+# def make_chat_request(client, messages, model="gpt-4", temperature=0.3, top_p=0.5):
+
+#     try:
+#         response = openai.ChatCompletion.create(
+#             model=model,
+#             messages=messages,
+#             temperature=temperature,
+#             top_p=top_p
+#         )
+#         return response.choices[0].message['content']
+#     except Exception as e:
+#         raise Exception(f"Error in OpenAI API call: {e}")
 
 def write_to_file(filepath, content):
     try:
@@ -85,7 +104,7 @@ def gen_survey_outline(abstracts, topic):
             "role": "system",
             "content": _outline_revision_prompt.format(
                 prev_prompt=outline_generation_prompt_pt_1,
-                reply=""
+                reply=init_outline
             )
         }
     ]
@@ -211,7 +230,6 @@ def gen_section_advice(section_list):
         for section in refined_sections:
             f.write(section + "\n\n")
 
-
 def edit_suggestions(section_list):
 
     print("Getting Suggestions for All Sections...")
@@ -323,7 +341,60 @@ def edit_two_files(section1, section2, suggestions):
 
     return refinement
 
+def extract_reference_numbers(sentence):
+    # Match references enclosed in square brackets, with ',' or ';' as separators
+    match = re.search(r'\[\d+([,;\s]*\d+)*\]', sentence)
+    if match:
+        # Extract the matched text, remove brackets, and split by commas or semicolons
+        numbers = re.split(r'[;,\s]+', match.group(0).strip("[]"))
+        return [int(num) for num in numbers if num.isdigit()]
+    return []
 
+def check_hallucination(full_context, section_initials, source_directory="enriched_sections", saved_directory="checked_sections"):
+    if not os.path.exists(f"./{saved_directory}"):
+        os.makedirs(f"./{saved_directory}")
+    client = OpenAI()
+    encoding = tiktoken.encoding_for_model('gpt-4o')
+    for files in os.listdir(f"./{source_directory}"):
+        if files[:2] in section_initials:
+            print(f"Checking section: {files[:-4]}")
+            with open(os.path.join(f"./{source_directory}", files), 'r') as f:
+                sentences = f.read().split("\n")
+            new_sentences = []
+            for i, s in enumerate(sentences):
+                ref_nums = extract_reference_numbers(s)
+                tmp_s = s
+                if len(ref_nums) > 0:
+                    context = sentences[max(0, i-2):min(len(sentences), i+2)]
+                    for n in ref_nums:
+                        reference_paper_content = full_context[n].split("References")[0]
+                        if len(encoding.encode(reference_paper_content)) > 30000:
+                            continue
+                        msg = [
+                            {
+                                "role": "system",
+                                "content": _check_hallucination_prompt
+                            },
+                            {
+                                "role": "user",
+                                "content": f"""
+                                        # Target Sentence
+                                        {tmp_s}
+                                        # Context
+                                        {context}
+                                        # Reference Paper Index Number - {n}
+                                        {reference_paper_content}
+                                        """
+                            }
+                        ]
+                        res = make_chat_request(client, msg, model="gpt-4o", temperature=0.2, top_p=0.3)
+                        time.sleep(10)
+                        tmp_s = res
+                new_sentences.append(tmp_s)
+            print("Saving checked file...")
+            new_paragraph = "\n".join(new_sentences)
+            write_to_file(f"./{saved_directory}/{files}", new_paragraph)
+    return
 
 if __name__ == "__main__":
     # topic = 'LLM applications in legal texts'
@@ -331,6 +402,9 @@ if __name__ == "__main__":
     # final_outline, section_list = gen_survey_outline(abstracts, topic)
     # write_to_file("outline.txt", final_outline)
     section_list = ["Introduction", "Domain-Specific LLMs for Legal Texts", "Multilingual and Cross-Lingual Capabilities", "Legal Reasoning and Societal Values in LLMs", "Future Directions and Ethical Considerations", "Conclusion"]
+    full_content = load_full_content('The_Impact_of_Large_Language_Modeling_on_Natural_Language_Processing_in_Legal_Texts_A_Comprehensive_Survey.pdf')
+    section_initials = ["in", "do",  "mu", "fu", "le", "co"]
+    check_hallucination(full_content, section_initials)
     # with open('outline.txt', 'r') as f:
     #     final_outline = f.read()
     # enrich_section(section_list, topic, final_outline,abstracts)
@@ -339,4 +413,4 @@ if __name__ == "__main__":
     #gen_section_advice(section_list)
     
     #method 2
-    edit_suggestions(section_list)
+    # edit_suggestions(section_list)
