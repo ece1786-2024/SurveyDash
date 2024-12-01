@@ -1,0 +1,75 @@
+Large language models in education Vision and opportunities
+Model-as-a-service MaaS A survey
+GPT-3 Whats it good for
+BERT Pretraining of deep bidirectional transformers for language understanding
+RoBERTa A robustly optimized bert pretraining approach
+GPT-4 is here What scientists think
+A review on methods and applications in multimodal deep learning
+Large-scale multi-modal pre-trained models A comprehensive survey
+A survey on multimodal large language models
+Multimodal interaction A review
+The multiscenario multienvironment biosecure multimodal database
+Maximum mutual information estimation of hidden markov model parameters for speech recognition
+Name-it Association of face and name in video
+Automated facial expression recognition based on facs action units
+On the path to 2x learning Exploring the possibilities of advanced speech recognition
+The AMI meeting corpus A pre-announcement
+The calo meeting assistant system
+Social signal processing state-of-the-art and future perspectives of an emerging domain
+Multimodal deep learning
+A better way to pretrain deep boltzmann machines
+Image captioning with semantic attention
+Learning transferable visual models from natural language supervision
+Hierarchical text-conditional image generation with clip latents
+BEiT BERT pre-training of image transformers
+Language is not all you need Aligning perception with language models
+Palm-e An embodied multimodal language model
+Efficient estimation of word representations in vector space
+Byte pair encoding is suboptimal for language model pretraining
+Visual concepts tokenization
+An empirical study of training endto-end vision-and-language transformers
+Retrieval-based knowledge augmented vision language pre-training
+Align before fuse Vision and language representation learning with momentum distillation
+Exploring the limits of transfer learning with a unified text-to-text transformer
+SimVLM Simple visual language model pretraining with weak supervision
+Distilled dual-encoder model for vision-language understanding
+Vlmo Unified vision-language pre-training with mixture-of-modality-experts
+A prompt pattern catalog to enhance prompt engineering with ChatGPT
+Visual ChatGPT Talking drawing and editing with visual foundation models
+Attention is all you need
+An image is worth 16x16 words Transformers for image recognition at scale
+MM-REACT Prompting chatgpt for multimodal reasoning and action
+Multimodal few-shot learning with frozen language models
+BLIP-2 Bootstrapping languageimage pre-training with frozen image encoders and large language models
+LLaMA-Adapter Efficient fine-tuning of language models with zero-init attention
+MiniGPT-4 Enhancing vision-language understanding with advanced large language models
+Visual instruction tuning
+An empirical study of GPT-3 for few-shot knowledge-based vqa
+Plug-and-play VQA Zero-shot vqa by conjoining large pretrained models with zero training
+From images to textual prompts Zero-shot VQA with frozen large language models
+Captioning images taken by people who are blind
+Photorealistic text-to-image diffusion models with deep language understanding
+BSL-1K Scaling up co-articulated sign language recognition using mouthing cues
+Extensions of the sign language recognition and translation corpus RWTHPHOENIX-Weather
+Emotion recognition from multiple modalities Fundamentals and methodologies
+Developing a benchmark for emotional analysis of music
+Video-text modeling with zero-shot transfer from contrastive captioners
+VideoCLIP Contrastive pretraining for zero-shot video-text understanding
+mPLUG-2 A modularized multi-modal foundation model across text image and video
+MusicLM Generating music from text
+Meshtalk 3D face animation from speech using cross-modality disentanglement
+AI-generated content AIGC A survey
+A lip sync expert is all you need for speech to lip generation in the wild
+Microsoft COCO Common objects in context
+Visual genome Connecting language and vision using crowdsourced dense image annotations
+Towards automatic learning of procedures from web instructional videos
+Frozen in time A joint video and image encoder for end-to-end retrieval
+Common voice A massively-multilingual speech corpus
+Librispeech an asr corpus based on public domain audio books
+M5Product A multi-modal pretraining benchmark for e-commercial product downstream tasks
+MSR-VTT A large video description dataset for bridging video and language
+DREAMER A database for emotion recognition through eeg and ecg signals from wireless low-cost offthe-shelf devices
+Distributed training of large language models
+Continual learning through synaptic intelligence
+Large language models for robotics A survey
+PaLI A jointly-scaled multilingual language-image model

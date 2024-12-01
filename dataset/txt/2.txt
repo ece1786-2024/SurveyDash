@@ -1,0 +1,22 @@
+Deep contextualised  word representations
+ELMo Why its one of the biggest advancements in NLP
+A Step-by-Step NLP Guide to Learn ELMo for Extracting  Features from Text
+AllenNLP - About ELMo
+BERT Pre-training of  Deep Bidirectional Transformers for Language Understanding
+The Rise of GPT-3 Implications for Natural  Language Processing and Beyond
+Chatting about ChatGPT How may AI and GPT  impact academia and libraries
+Deep Transfer Learning  Beyond  Transformer Language Models in Information Systems Research
+Language Models Explained How GPT and Other Models  Work
+OpenAI GPT-3 Understanding the Architecture
+BERT NLP Model Explained for Complete Beginners
+Revolutionising AI OpenAI GPT-3  Architecture
+AI Study Evaluates GPT-3 Using Cognitive Psychology
+Introducing LLaMA A foundational 65-billion-parameter  large language model
+LLaMA Open and Efficient Foundation Language  Models
+Components of Transformer Architecture
+Root Mean Square Layer Normalisation
+Exploring the Limits of Transfer Learning with a  Unified Text-to-Text Transformer
+Reformer Enhanced Transformer With Rotary Position  Embedding
+Decoupled Weight Decay Regularization
+Language models are few-shot learners
+An Analysis of Deep Contextual Word  Embeddings and Neural Architectures for Toponym Mention Detection in  Scientific Publications

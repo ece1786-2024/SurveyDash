@@ -1,0 +1,113 @@
+Quantum internet Networking challenges in distributed quantum computing
+The Quantum Internet  The Second Quantum Revolution
+Quantum Internet Alliance
+The European Quantum Communication Infrastructure EuroQCI Initiative
+Quantum network research centers in the US
+Satellite-based entanglement distribution over 1200 kilometers
+How Much Money Has China Already Invested into Quantum Technology - Part 2
+Towards a distributed quantum computing ecosystem
+Announcing the AWS Center for Quantum Networking
+Application scenarios for the quantum internet
+The Path to Scalable Distributed Quantum Computing
+Quantum internet From communication to distributed computing In Proc
+Compiler design for distributed quantum computing
+Avron Ofer Casper and Ilan Rozen
+Quantum Internet a Vision for the Road Ahead
+The Rise of the Quantum Internet
+Expanding the IBM Quantum roadmap to anticipate the future of quantum-centric supercomputing
+Quantum algorithms and simulation for parallel and distributed quantum computing
+Deterministic multi-qubit entanglement in a quantum network
+Realization of a multinode quantum network of remote solid-state qubits
+Qubit teleportation between non-neighbouring nodes in a quantum network
+When entanglement meets classical communications Quantum teleportation for the quantum internet
+An introduction to quantum computing for non-physicists
+Quantum Computing A Gentle Introduction
+Quantum Computation and Quantum Information
+A new notation for quantum mechanics
+On the role of entanglement in quantum-computational speed-up
+Graph states for quantum secret sharing
+On the Einstein Podolsky Rosen paradox
+Can quantum-mechanical description of physical reality be considered complete Physical review  4710777 1935
+Theory of fault-tolerant quantum computation
+Quantum algorithm implementations for beginners
+How deep the theory of quantum communications goes Superadditivity superactivation and causal activation
+Experimental comparison of two quantum computing architectures
+Error mitigation extends the computational reach of a noisy quantum processor
+Analysis of error propagation in quantum computers
+The path to scalable distributed quantum computing
+On the Complexity of Quantum Circuit Compilation
+Saeed and Muharrem Umit Uyar
+tket  a retargetable compiler for nisq devices
+Challenges and opportunities of near-term quantum computing systems
+Efficient and effective quantum compiling for entanglement-based machine learning on ibm q devices
+Learning the quantum algorithm for state overlap
+An efficient methodology for mapping quantum circuits to the ibm qx architectures
+Quantum algorithms An overview
+Polynomial time algorithms for discrete logarithms and factoring on a quantum computer
+A fast quantum mechanical algorithm for database search
+Harrow Avinatan Hassidim and Seth Lloyd
+Variational quantum algorithms
+Quantum error correction for quantum memories
+Neumann Roy van Houte and Thomas Attema
+Quantum computations algorithms and error correction
+Optimal local implementation of nonlocal quantum gates
+Distributed Quantum Computing and Network Control for Accelerated VQE
+Generalized GHZ states and distributed quantum computing
+Distributed quantum machine learning
+Resource allocation in quantum networks for distributed quantum computing
+Distributed quantum computation over noisy channels
+Efficient distributed quantum computing
+Efficient implementation of quantum circuits with limited qubit interactions
+Quantum Network Utility Maximization
+Quantum Network Utility A Framework for Benchmarking Quantum Networks
+Bishop Sarah Sheldon Paul D
+Architectural principles for a quantum internet
+Quantum internet protocol stack a comprehensive survey
+The quantum internet Enhancing classical services one qubit at a time
+Toward the quantum internet A directional-dependent noise model for quantum signal processing
+Horodecki Pawe Horodecki Micha Horodecki and Karol Horodecki
+Authenticated teleportation and verification in a noisy network
+Distributed arithmetic on a quantum multicomputer
+Purification of noisy entanglement and faithful teleportation via noisy channels
+Bennett David P DiVincenzo John A Smolin and William K Wootters
+Entanglement purification and quantum error correction
+Ruan Wenhan Dai and Moe Z Win
+Optimizing practical entanglement distillation
+Ruan Brian T Kirby Michael Brodsky and Moe Z Win
+Boolean satisfiability in quantum compilation
+Topological and Subsystem Codes on Low-Degree Graphs with Flag Qubits
+orgdocumentationapidoctranspiler
+Automated distribution of quantum circuits via hypergraph partitioning
+Sundaram Himanshu Gupta and C
+Distribution of Quantum Circuits Over General Quantum Networks
+Optimized quantum circuit partitioning
+A dynamic programming approach for distributing quantum circuits by bipartite graphs
+Automated window-based partitioning of quantum circuits
+Optimized compiler for distributed quantum computing 2021
+A New Approach for Optimization of Distributed Quantum Circuits
+Implementation of Shors algorithm on a linear nearest neighbor qubit array
+An efficient heuristic procedure for partitioning graphs
+Noise-adaptive compiler mappings for noisy intermediatescale quantum computers
+Extracting success from ibms 20-qubit machines using error-aware compilation
+A hardware-aware heuristic for the qubit mapping problem in the nisq era
+Noise-adaptive quantum compilation strategies evaluated with applicationmotivated benchmarks
+A software tool for mapping and executing distributed quantum computations on a network simulator 2021
+Sok Benchmarking the performance of a quantum computer
+A distributed simulation framework for quantum networks and channels
+NetSquid a NETwork Simulator for QUantum Information using Discrete events
+SimulaQron - a simulator for developing quantum internet software
+Sequence a customizable discrete-event simulator of quantum networks
+Simulation of a Dynamic RuleSet-based Quantum Network
+QuNetSim A Software Framework for Quantum Networks
+Netqasm - a low-level instruction set architecture for hybrid quantumclassical programs in a quantum internet
+Quantum Network Explorer ADK 2022
+Benchmarking of quantum protocols
+Quantum key distribution A networking perspective
+End-to-end entanglement generation strategies Capacity bounds and impact on quantum key distribution
+Request scheduling in quantum networks
+Quantum Protocol Zoo 2022
+Quantum error correction for beginners
+Steiger Thomas Hner and Matthias Troyer
+EQSN Effective Quantum Simulator for Networks 2020
+Open quantum assembly language
+Microwave quantum link between superconducting circuits housed in spatially separated cryogenic systems

@@ -56,18 +56,36 @@ def search_on_arxiv(titles):
     return data
 
 
-def get_data(file):
-    with open(file) as f:
+def get_data(file_path):
+    with open(file_path) as f:
         papers = f.read().split('\n')
 
     abstracts = search_on_arxiv(papers)
 
-    with open(f'{os.path.basename(file)}.json', 'w') as f:
+    directory = os.path.dirname(file_path)
+    file_name = os.path.basename(file_path)
+    file_name = file_name.split('.')[0]
+    with open(f'{directory}/../abs/{file_name}.json', 'w') as f:
         json.dump(abstracts, f)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Download references from a PDF file')
     parser.add_argument('file', type=str, help='Path to the PDF file')
+
     args = parser.parse_args()
-    get_data(args.file)
+
+    if os.path.isfile(args.file):
+        get_data(args.file)
+    elif os.path.isdir(args.file):
+        for file in os.listdir(args.file):
+            if file.endswith('.txt'):
+                print(file)
+                get_data(os.path.join(args.file, file))
+
+"""
+# Usage
+python download_abs.py ./dataset/txt/1.txt
+# OR
+python download_abs.py ./dataset/txt/
+"""
