@@ -20,7 +20,7 @@ import os
 
 # client = OpenAI(api_key='')
 # client = ""
-# openai.api_key = "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"
+# openai.api_key = ""
 
 def load_abstracts(filename):
     with open(f'{filename}.json', 'r') as f:
