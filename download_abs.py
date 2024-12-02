@@ -45,6 +45,8 @@ def search_on_arxiv(titles):
                 data.append({
                     'reference': title,
                     'title': result.title,
+                    'authors': [a.name for a in result.authors],
+                    'year': result.published.year,
                     'abstract': result.summary,
                     'url': result.entry_id
                 })
@@ -66,7 +68,7 @@ def get_data(file_path):
     file_name = os.path.basename(file_path)
     file_name = file_name.split('.')[0]
     with open(f'{directory}/../abs/{file_name}.json', 'w') as f:
-        json.dump(abstracts, f)
+        json.dump(abstracts, f, indent=2)
 
 
 if __name__ == '__main__':
