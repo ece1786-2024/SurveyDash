@@ -9,3 +9,5 @@ python download_abs.py papers.txt
 ```
 
 This will download the basic information of the papers from ArXiv and save them in a file named `papers.txt.json`.
+
+User need to input all reference paper titles
