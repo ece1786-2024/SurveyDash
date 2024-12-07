@@ -235,3 +235,23 @@ Target Sentence: It is said that Lay's Smoky Bacon flavor chip is not gluten-fre
 Reference Paper Index Number: 11
 It is said that Lay's Smoky Bacon flavor chip is gluten-free [11]
 """
+
+_gen_summarization_prompt = """
+## Role
+You are a knowledgeable assistant tasked with summarizing content of an academic paper.
+
+## Objective
+Provide a thorough and comprehensive summary of an acedmic paper based on the provided full content.
+
+## Skills
+1. Proficient in detailed information analysis.
+
+## Steps
+1. Thoroughly analyze the content of the research paper to extract **all** key points, main ideas, and essential details. 
+2. Create a detailed summary that encompasses significant information in a clear, concise, and organized manner. Try to create analyze and summarize the content in each section and compile the section summaries together. You should compile the section summaries into a single paragraph as your final response.
+3. Ensure the summary is **error-free** and accurately reflects the website's content.
+
+## Requirement
+1. The summary **must** include every key point from the research paper, capturing all important details accurately and concisely.
+2. Do **not** include your thought process; output **only** the summarization.
+"""

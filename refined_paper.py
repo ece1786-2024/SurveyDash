@@ -20,6 +20,7 @@ import os
 
 # client = OpenAI(api_key='')
 # client = ""
+<<<<<<< HEAD
 # openai.api_key = ""
 
 def load_abstracts(filename):
@@ -168,6 +169,7 @@ def enrich_section(section_list, topic, outline, abstracts):
         os.makedirs(directory)
     enriched_draft = ""
     for section in section_list:
+        summaries_combined = "\n".join([f"{key}: {value}" for key, value in abstracts.items()])
         enrich_section_msg = [
             {
                 "role": "system",
@@ -179,7 +181,7 @@ def enrich_section(section_list, topic, outline, abstracts):
             },
             {
                 "role": "user",
-                "content": abstracts
+                "content": summaries_combined
             }
         ]
         enriched_draft = make_chat_request(client, enrich_section_msg)
@@ -233,7 +235,7 @@ def gen_section_advice(section_list):
 def edit_suggestions(section_list):
 
     print("Getting Suggestions for All Sections...")
-    directory = "enriched_sections"
+    directory = "checked_sections"
     combined_content = []
 
     for section in section_list:
@@ -396,21 +398,61 @@ def check_hallucination(full_context, section_initials, source_directory="enrich
             write_to_file(f"./{saved_directory}/{files}", new_paragraph)
     return
 
+def read_and_summarize_articles(abstracts):
+    client = OpenAI()
+    print("Reading and Summarizing Articles...")
+    # abstract_list = abstracts.strip().split("\n\n")
+    summaries = {}
+    encoding = tiktoken.encoding_for_model('gpt-4o')
+    directory = "summarized_articles"
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    for abstract_num in abstracts:
+        try:
+            # Separate abstract number and text
+            # abstract_number, abstract_text = abstract.split("\n", 1)
+            # abstract_number = abstract_number.strip()
+            # Simulate "reading" by analyzing content and summarizing
+            abstract_text = abstracts[abstract_num].split("References")[0]
+            if len(encoding.encode(abstract_text)) > 30000:
+                continue
+            read_and_summarize_msg = [
+                {
+                    "role": "system",
+                    "content":  _gen_summarization_prompt
+                },
+                {
+                    "role": "user",
+                    "content": abstract_text
+                }
+            ]
+            summary = make_chat_request(client, read_and_summarize_msg, temperature=0.6, top_p=0.7)
+            summaries[abstract_num] = summary
+            # Save each summary to a separate file
+            filename = f"{directory}/abstract_{abstract_num}.txt"
+            with open(filename, "w", encoding="utf-8") as file:
+                file.write(summary)
+            print(f"Saved summary for abstract {abstract_num} to {filename}")
+        except Exception as e:
+            print(f"Failed to process article: {abstract_num}\nError: {e}")
+    return summaries
+
 if __name__ == "__main__":
-    # topic = 'LLM applications in legal texts'
+    topic = 'LLM applications in legal texts'
     #abstracts = load_abstracts('The_Impact_of_Large_Language_Modeling_on_Natural_Language_Processing_in_Legal_Texts_A_Comprehensive_Survey.pdf')
     # final_outline, section_list = gen_survey_outline(abstracts, topic)
     # write_to_file("outline.txt", final_outline)
     section_list = ["Introduction", "Domain-Specific LLMs for Legal Texts", "Multilingual and Cross-Lingual Capabilities", "Legal Reasoning and Societal Values in LLMs", "Future Directions and Ethical Considerations", "Conclusion"]
     full_content = load_full_content('The_Impact_of_Large_Language_Modeling_on_Natural_Language_Processing_in_Legal_Texts_A_Comprehensive_Survey.pdf')
+    abstracts = read_and_summarize_articles(full_content)
     section_initials = ["in", "do",  "mu", "fu", "le", "co"]
-    check_hallucination(full_content, section_initials)
+    # check_hallucination(full_content, section_initials)
     # with open('outline.txt', 'r') as f:
-    #     final_outline = f.read()
-    # enrich_section(section_list, topic, final_outline,abstracts)
+        # final_outline = f.read()
+    # enrich_section(section_list, topic, final_outline, abstracts)
     
     #method 1
-    #gen_section_advice(section_list)
+    # gen_section_advice(section_list)
     
     #method 2
     # edit_suggestions(section_list)
