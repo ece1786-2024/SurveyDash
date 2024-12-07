@@ -9,7 +9,8 @@ from prompts import (_outline_generation_prompt,
                      _section_advice_prompt,
                      _section_refine_prompt,
                      _combined_section_suggestion_prompt,
-                     _check_hallucination_prompt)
+                     _check_hallucination_prompt,
+                     _gen_summarization_prompt)
 import tiktoken
 import time
 import pymupdf4llm
@@ -20,8 +21,8 @@ import os
 
 # client = OpenAI(api_key='')
 # client = ""
-<<<<<<< HEAD
 # openai.api_key = ""
+client = OpenAI()
 
 def load_abstracts(filename):
     with open(f'{filename}.json', 'r') as f:
