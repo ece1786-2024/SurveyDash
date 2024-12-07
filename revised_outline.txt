@@ -1,0 +1,67 @@
+# Revised Outline
+# Survey Paper on LLM Applications in Legal Texts
+
+## 1. Introduction
+  - **Main Idea:** Introduce the transformative potential of Large Language Models (LLMs) in the legal domain, emphasizing their role in enhancing legal text analysis and practice.
+  - **Core Papers:** 1, 3, 5, 7
+  - **Possible Related Papers:** 9, 10, 13
+  - **Content Structure:** 
+    - Overview of LLMs and their general applications.
+    - Importance of domain-specific adaptations, particularly in legal contexts.
+    - Introduction to the papers covered in the survey and their contributions to the field.
+    - Highlight the growing interest and advancements in legal NLP.
+  - **Cohesion Across Sections:** Set the stage for detailed discussions on specific applications and advancements in subsequent sections.
+
+## 2. Domain-Specific LLMs for Legal Texts
+  - **Main Idea:** Explore the development and application of LLMs specifically tailored for legal texts.
+  - **Core Papers:** 1, 3, 5
+  - **Possible Related Papers:** 7, 13
+  - **Content Structure:**
+    - Discussion on AraLegal-BERT and its customization for Arabic legal texts (Paper 1).
+    - Survey of legal judgment prediction models and datasets (Paper 3).
+    - Overview of AI advancements in legal text analysis (Paper 5).
+    - Comparison of domain-specific models with general LLMs.
+    - Identification of gaps in current research and potential areas for further development.
+  - **Cohesion Across Sections:** Link to the next section by highlighting the importance of multilingual capabilities and cross-lingual generalization in legal applications.
+
+## 3. Multilingual and Cross-Lingual Capabilities
+  - **Main Idea:** Examine the role of multilingual LLMs in enhancing legal text analysis across different languages.
+  - **Core Papers:** 8, 15, 18
+  - **Possible Related Papers:** 1, 3
+  - **Content Structure:**
+    - Analysis of multilingual models like BLOOM and mT5 and their performance on legal tasks (Papers 8, 15, 18).
+    - Discussion on cross-lingual generalization and its implications for legal texts.
+    - Comparison of multilingual models with monolingual legal models.
+    - Challenges and solutions in multilingual legal text processing.
+  - **Cohesion Across Sections:** Transition to the next section by discussing the integration of legal reasoning and societal values in LLMs.
+
+## 4. Legal Reasoning and Societal Values in LLMs
+  - **Main Idea:** Investigate how LLMs can incorporate legal reasoning and societal values to align AI behavior with human goals.
+  - **Core Papers:** 9, 13
+  - **Possible Related Papers:** 5, 7
+  - **Content Structure:**
+    - Exploration of the "Law Informs Code" approach and its potential to align AI with human values (Paper 9).
+    - Case study on legal case entailment using large LLMs (Paper 13).
+    - Discussion on the challenges of embedding legal reasoning in LLMs.
+    - Potential frameworks for integrating legal standards and societal values into AI systems.
+  - **Cohesion Across Sections:** Connect to the final section by emphasizing the need for continuous advancements and ethical considerations in LLM applications.
+
+## 5. Future Directions and Ethical Considerations
+  - **Main Idea:** Discuss future research directions and ethical considerations in the application of LLMs to legal texts.
+  - **Core Papers:** 5, 7, 9
+  - **Possible Related Papers:** 6, 13
+  - **Content Structure:**
+    - Identification of open challenges and research gaps in the field.
+    - Ethical considerations in deploying LLMs for legal applications, including bias and fairness (Paper 6).
+    - The role of community-driven efforts and open-access models in advancing the field.
+    - Recommendations for future research and practice.
+  - **Cohesion Across Sections:** Conclude by summarizing the key insights from the survey and reiterating the transformative potential of LLMs in the legal domain.
+
+## 6. Conclusion
+  - **Main Idea:** Summarize the key findings and emphasize the transformative potential of LLMs in legal text analysis.
+  - **Core Papers:** 1, 3, 5, 7
+  - **Possible Related Papers:** 9, 13
+  - **Content Structure:**
+    - Recap of the major themes and contributions discussed in the survey.
+    - Reflection on the progress made and the challenges that remain.
+    - Final thoughts on the future of LLMs in the legal domain and their potential impact on legal practice and society.
