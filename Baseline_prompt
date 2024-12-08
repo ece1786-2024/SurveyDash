@@ -1,0 +1,24 @@
+System: 
+You are a highly knowledgeable technical writer and researcher with expertise in synthesizing, analyzing, and presenting information in a structured and academically rigorous manner. Your task is to write a comprehensive survey paper that synthesizes the key findings, methodologies, and future directions of research based on a reference paper provided by the user. Focus on maintaining technical precision, clear organization, and advanced analysis. Ensure the paper provides added value by connecting the reference paper to broader research themes and offering insights into trends, gaps, and opportunities.
+User:
+Your task is to generate a survey paper that includes the information in the reference papers. You should follow the conventional style of survey papers and make high quality analysis between different methods. You should also describe the evolution of each of the relevant areas. Before you generate your outputs, you need to think over what is the outline of the survey paper. Then after you have an outline in mind, generate the survey paper based on the outline you had in mind. Before you output the survey paper, in you mind only do not output this, double check if the words you are about to output make sense. You should also include citations of the papers that you referenced in the survey paper where you used the information.
+Reference paper:
+Al-qurishi Muhammad et al. AraLegal-BERT: A pretrained language model for Arabic Legal text. Abu Dhabi, United Arab Emirates (Hybrid), Dec. 2022. URL: https://aclanthology.org/2022.nllp-1.31.
+Stephen Bach et al. “PromptSource: An Integrated Development Environment and Repository for Natural Language Prompts”. In: Proceedings of ACL 2022: System Demonstrations. Dublin, Ireland, May 2022, pp. 93–104. DOI: 10.18653/v1/2022.acl-demo.9.
+Hyung Won Chung et al. “Scaling instruction-finetuned language models”. In: arXiv preprint arXiv:2210.11416 (2022).
+Jiaxi Cui et al. “Chatlaw: Open-source legal large language model with integrated external knowledge bases”. In: arXiv preprint arXiv:2306.16092 (2023).
+Junyun Cui et al. A Survey on Legal Judgment Prediction: Datasets, Metrics, Models and Challenges. 2022. arXiv: 2204.04859 [cs.CL].
+Jacob Devlin et al. “Bert: Pre-training of deep bidirectional transformers for language understanding”. In: arXiv preprint arXiv:1810.04805 (2018)
+Joao Dias et al. ˜ State of the Art in Artificial Intelligence applied to the Legal Domain. 2022. arXiv: 2204.07047.
+Virginia K. Felkner et al. Towards WinoQueer: Developing a Benchmark for Anti-Queer Bias in Large Language Models. 2022. arXiv: 2206.11484 [cs.CL]
+Daniel Martin Katz et al. Natural Language Processing in the Legal Domain. 2023. arXiv: 2302.12039
+Niklas Muennighoff et al. Crosslingual Generalization through Multitask Finetuning. 2022. arXiv: 2211.01786.
+John J. Nay. Law Informs Code: A Legal Informatics Approach to Aligning Artificial Intelligence with Humans. 2023. arXiv: 2209.13020 [cs.CY]
+Alejandro Pena et al. ˜ Leveraging Large Language Models for Topic Classification in the Domain of Public Affairs. 2023. arXiv: 2306.02864.
+Alec Radford et al. Learning Transferable Visual Models From Natural Language Supervision. 2021. arXiv: 2103.00020
+Guilherme Moraes Rosa et al. “Billions of parameters are worth more than in-domain training data: A case study in the legal case entailment task”. In: arXiv preprint arXiv:2205.15172 (2022).
+Teven Le Scao et al. “Bloom: A 176b-parameter openaccess multilingual language model”. In: arXiv preprint arXiv:2211.05100 (2022).
+Zhenwei Shao et al. Prompting Large Language Models with Answer Heuristics for Knowledge-based Visual Question Answering. 2023. arXiv: 2303.01903.
+Xiaofei Sun et al. Text Classification via Large Language Models. 2023. arXiv: 2305.08377
+Yi Tay et al. “Unifying language learning paradigms”. In: arXiv preprint arXiv:2205.05131 (2022).
+Ashish Vaswani et al. Attention Is All You Need. 2017. arXiv: 1706.03762
