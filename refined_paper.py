@@ -71,14 +71,16 @@ def make_chat_request(client, messages, model="gpt-4o", temperature=0.3, top_p=0
 #         raise Exception(f"Error in OpenAI API call: {e}")
 
 def write_to_file(filepath, content):
+    directory = os.path.dirname(filepath)
+    file_name = os.path.basename(filepath)
     try:
-        with open(f'{int(time.time())}_{filepath}', 'w') as f:
+        with open(f'{directory}/{int(time.time())}_{file_name}', 'w') as f:
             f.write(content)
         with open(filepath, 'w') as f:
             f.write(content)
     except IOError as e:
         raise Exception(f"Error writing to file {filepath}: {e}")
-    
+
 def extract_section_titles(recent_advice):
     pattern = r"### (\d+\.\s+[A-Za-z -]+)"
     matches = re.findall(pattern, recent_advice)
@@ -161,6 +163,7 @@ def gen_survey_outline(abstracts, topic):
         ]
         final_outline += make_chat_request(client, section_outline_msg)
         final_outline += "\n"
+    write_to_file("outline.txt", final_outline)
     return final_outline, section_list
 
 def enrich_section(section_list, topic, outline, abstracts):
@@ -189,13 +192,13 @@ def enrich_section(section_list, topic, outline, abstracts):
         filename = f"{directory}/{section.replace(' ', '_').replace('.', '').lower()}.txt"
         write_to_file(filename, enriched_draft)
         print(f"Saved {section} to {filename}")
-        
-        
+
+
 def gen_section_advice(section_list):
     print("Final Draft...")
     directory = "enriched_sections"
     refined_sections = []
-    for index in range(0, len(section_list) - 1, 2): 
+    for index in range(0, len(section_list) - 1, 2):
         filename1 = f"{directory}/{section_list[index].replace(' ', '_').replace('.', '').lower()}.txt"
         filename2 = f"{directory}/{section_list[index+1].replace(' ', '_').replace('.', '').lower()}.txt"
         with open(filename1, 'r') as f:
@@ -265,8 +268,8 @@ def edit_suggestions(section_list):
     # Iterate through the files two by two and apply edits
     for index in range(0, len(section_list) - 1, 2):
         refined_content = edit_two_files(
-            section_list[index], 
-            section_list[index + 1], 
+            section_list[index],
+            section_list[index + 1],
             parsed_suggestions[index:index + 2]
         )
         refined_sections.append(refined_content)
@@ -283,7 +286,7 @@ def edit_suggestions(section_list):
 
 def parse_suggestions(suggestions_text):
     parsed_suggestions = []
-    sections = suggestions_text.split("\n\n") 
+    sections = suggestions_text.split("\n\n")
 
     current_block = []
 
@@ -291,15 +294,15 @@ def parse_suggestions(suggestions_text):
         section = section.strip()
         # Check if the section starts with "Section Title"
         if section.startswith("Section Title:"):
-            
+
             if current_block:
                 parsed_suggestions.append("\n\n".join(current_block))
-                current_block = []  
-            
-           
+                current_block = []
+
+
             current_block.append(section)
         else:
-           
+
             current_block.append(section)
 
     if current_block:
@@ -400,7 +403,6 @@ def check_hallucination(full_context, section_initials, source_directory="enrich
     return
 
 def read_and_summarize_articles(abstracts):
-    client = OpenAI()
     print("Reading and Summarizing Articles...")
     # abstract_list = abstracts.strip().split("\n\n")
     summaries = {}
@@ -431,8 +433,7 @@ def read_and_summarize_articles(abstracts):
             summaries[abstract_num] = summary
             # Save each summary to a separate file
             filename = f"{directory}/abstract_{abstract_num}.txt"
-            with open(filename, "w", encoding="utf-8") as file:
-                file.write(summary)
+            write_to_file(filename, summary)
             print(f"Saved summary for abstract {abstract_num} to {filename}")
         except Exception as e:
             print(f"Failed to process article: {abstract_num}\nError: {e}")
@@ -451,9 +452,9 @@ if __name__ == "__main__":
     # with open('outline.txt', 'r') as f:
         # final_outline = f.read()
     # enrich_section(section_list, topic, final_outline, abstracts)
-    
+
     #method 1
     # gen_section_advice(section_list)
-    
+
     #method 2
     # edit_suggestions(section_list)

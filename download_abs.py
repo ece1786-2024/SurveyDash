@@ -1,6 +1,7 @@
 import argparse
 import os
 import json
+from urllib import request
 import arxiv
 
 
@@ -58,6 +59,12 @@ def search_on_arxiv(titles):
     return data
 
 
+def download_pdf(data, pdf_directory):
+    os.makedirs(pdf_directory, exist_ok=True)
+    for d in data:
+        request.urlretrieve(d["url"].replace("/abs/", "/pdf/"), f"{pdf_directory}/{d['title']}.pdf")
+
+
 def get_data(file_path):
     with open(file_path) as f:
         papers = f.read().split('\n')
@@ -69,6 +76,8 @@ def get_data(file_path):
     file_name = file_name.split('.')[0]
     with open(f'{directory}/../abs/{file_name}.json', 'w') as f:
         json.dump(abstracts, f, indent=2)
+
+    download_pdf(abstracts, f'{directory}/../pdf/{file_name}')
 
 
 if __name__ == '__main__':
