@@ -45,7 +45,7 @@ def load_full_content(filename, pdf_directory="./reference_papers"):
         full_content[i+1] = curr_content
     return full_content
 
-def make_chat_request(client, messages, model="gpt-4o", temperature=0.3, top_p=0.5):
+def make_chat_request(client, messages, model="gpt-4o", temperature=0.3, top_p=0.5) -> str:
     try:
         response = client.chat.completions.create(
             model=model,
@@ -166,12 +166,11 @@ def gen_survey_outline(abstracts, topic):
     write_to_file("outline.txt", final_outline)
     return final_outline, section_list
 
-def enrich_section(section_list, topic, outline, abstracts):
+def enrich_section(section_list: list[str], topic: str, outline: str, abstracts: dict[int, str]):
     print("Enriching Draft...")
     directory = "enriched_sections"
     if not os.path.exists(directory):
         os.makedirs(directory)
-    enriched_draft = ""
     for section in section_list:
         summaries_combined = "\n".join([f"{key}: {value}" for key, value in abstracts.items()])
         enrich_section_msg = [
@@ -189,18 +188,22 @@ def enrich_section(section_list, topic, outline, abstracts):
             }
         ]
         enriched_draft = make_chat_request(client, enrich_section_msg)
-        filename = f"{directory}/{section.replace(' ', '_').replace('.', '').lower()}.txt"
+        filename = f"{directory}/{get_section_filename(section)}.txt"
         write_to_file(filename, enriched_draft)
         print(f"Saved {section} to {filename}")
 
 
-def gen_section_advice(section_list):
+def get_section_filename(section):
+    return section.replace(' ', '_').replace('.', '').lower()
+
+
+def gen_section_advice(section_list, directory="enriched_sections"):
     print("Final Draft...")
-    directory = "enriched_sections"
+
     refined_sections = []
     for index in range(0, len(section_list) - 1, 2):
-        filename1 = f"{directory}/{section_list[index].replace(' ', '_').replace('.', '').lower()}.txt"
-        filename2 = f"{directory}/{section_list[index+1].replace(' ', '_').replace('.', '').lower()}.txt"
+        filename1 = f"{directory}/{get_section_filename(section_list[index])}.txt"
+        filename2 = f"{directory}/{get_section_filename(section_list[index+1])}.txt"
         with open(filename1, 'r') as f:
             file1 = f.read()
         with open(filename2, 'r') as f:
@@ -232,18 +235,17 @@ def gen_section_advice(section_list):
         refinement = make_chat_request(client, section_refine_msg)
         print(refinement)
         refined_sections.append(refinement)
-    with open(f"{directory}/refined_combined_sections.txt", 'w') as f:
-        for section in refined_sections:
-            f.write(section + "\n\n")
 
-def edit_suggestions(section_list):
+    write_to_file(f"{directory}/refined_sections.txt", "\n\n".join(refined_sections))
 
+
+def edit_suggestions(section_list, directory="checked_sections"):
     print("Getting Suggestions for All Sections...")
-    directory = "checked_sections"
+
     combined_content = []
 
     for section in section_list:
-        filename = f"{directory}/{section.replace(' ', '_').replace('.', '').lower()}.txt"
+        filename = f"{directory}/{get_section_filename(section)}.txt"
         with open(filename, 'r') as f:
             combined_content.append(f.read())
 
@@ -275,13 +277,12 @@ def edit_suggestions(section_list):
         refined_sections.append(refined_content)
 
     # Write all refined sections to a new file
-    output_file = f"{directory}/refined_all_sections.txt"
-    with open(output_file, 'w') as f:
-        for section in refined_sections:
-            f.write(section + "\n\n")
+    output_file = f"refined_all_sections.txt"
+    output_content = "\n\n".join(refined_sections)
+    write_to_file(output_file, output_content)
 
     print(f"All edits have been saved to {output_file}")
-
+    return output_content
 
 
 def parse_suggestions(suggestions_text):
@@ -317,8 +318,8 @@ def edit_two_files(section1, section2, suggestions):
 
     print(f"Editing files: {section1}, {section2}")
     directory = "enriched_sections"
-    filename1 = f"{directory}/{section1.replace(' ', '_').replace('.', '').lower()}.txt"
-    filename2 = f"{directory}/{section2.replace(' ', '_').replace('.', '').lower()}.txt"
+    filename1 = f"{directory}/{get_section_filename(section1)}.txt"
+    filename2 = f"{directory}/{get_section_filename(section2)}.txt"
 
     with open(filename1, 'r') as f:
         file1 = f.read()
@@ -356,15 +357,15 @@ def extract_reference_numbers(sentence):
         return [int(num) for num in numbers if num.isdigit()]
     return []
 
-def check_hallucination(full_context, section_initials, source_directory="enriched_sections", saved_directory="checked_sections"):
+def check_hallucination(full_context: dict[int, str], sections: list[str], source_directory="enriched_sections", saved_directory="checked_sections"):
     if not os.path.exists(f"./{saved_directory}"):
         os.makedirs(f"./{saved_directory}")
-    client = OpenAI()
+
     encoding = tiktoken.encoding_for_model('gpt-4o')
-    for files in os.listdir(f"./{source_directory}"):
-        if files[:2] in section_initials:
-            print(f"Checking section: {files[:-4]}")
-            with open(os.path.join(f"./{source_directory}", files), 'r') as f:
+    for file in os.listdir(f"./{source_directory}"):
+        if file.split('.')[0] in sections:
+            print(f"Checking section: {file[:-4]}")
+            with open(os.path.join(f"./{source_directory}", file), 'r') as f:
                 sentences = f.read().split("\n")
             new_sentences = []
             for i, s in enumerate(sentences):
@@ -399,13 +400,13 @@ def check_hallucination(full_context, section_initials, source_directory="enrich
                 new_sentences.append(tmp_s)
             print("Saving checked file...")
             new_paragraph = "\n".join(new_sentences)
-            write_to_file(f"./{saved_directory}/{files}", new_paragraph)
+            write_to_file(f"./{saved_directory}/{file}", new_paragraph)
     return
 
-def read_and_summarize_articles(abstracts):
+def read_and_summarize_articles(abstracts: dict[int, str]):
     print("Reading and Summarizing Articles...")
     # abstract_list = abstracts.strip().split("\n\n")
-    summaries = {}
+    summaries: dict[int, str] = {}
     encoding = tiktoken.encoding_for_model('gpt-4o')
     directory = "summarized_articles"
     if not os.path.exists(directory):
@@ -446,9 +447,8 @@ if __name__ == "__main__":
     # write_to_file("outline.txt", final_outline)
     section_list = ["Introduction", "Domain-Specific LLMs for Legal Texts", "Multilingual and Cross-Lingual Capabilities", "Legal Reasoning and Societal Values in LLMs", "Future Directions and Ethical Considerations", "Conclusion"]
     full_content = load_full_content('The_Impact_of_Large_Language_Modeling_on_Natural_Language_Processing_in_Legal_Texts_A_Comprehensive_Survey.pdf')
-    abstracts = read_and_summarize_articles(full_content)
-    section_initials = ["in", "do",  "mu", "fu", "le", "co"]
-    # check_hallucination(full_content, section_initials)
+    # abstracts = read_and_summarize_articles(full_content)
+    check_hallucination(full_content, list(map(get_section_filename, section_list)))
     # with open('outline.txt', 'r') as f:
         # final_outline = f.read()
     # enrich_section(section_list, topic, final_outline, abstracts)
