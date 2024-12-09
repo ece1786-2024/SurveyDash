@@ -19,10 +19,8 @@ import json
 import re
 import os
 
-# client = OpenAI(api_key='')
-# client = ""
-# openai.api_key = ""
-client = OpenAI()
+# to be revoked
+client = OpenAI(api_key='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')
 
 def load_abstracts(filename):
     with open(f'{filename}.json', 'r') as f:
@@ -74,13 +72,15 @@ def make_chat_request(client, messages, model="gpt-4o", temperature=0.3, top_p=0
 
 def write_to_file(filepath, content):
     try:
+        with open(f'{int(time.time())}_{filepath}', 'w') as f:
+            f.write(content)
         with open(filepath, 'w') as f:
             f.write(content)
     except IOError as e:
         raise Exception(f"Error writing to file {filepath}: {e}")
     
 def extract_section_titles(recent_advice):
-    pattern = r"### (\d+\.\s+[A-Za-z ]+)"
+    pattern = r"### (\d+\.\s+[A-Za-z -]+)"
     matches = re.findall(pattern, recent_advice)
     section_titles = [re.sub(r"\d+\.\s+", "", title).strip() for title in matches]
     return section_titles

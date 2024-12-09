@@ -32,9 +32,11 @@ You are a experienced professor and are extremely demanding and expects perfecti
 ## General Requirements
 1. You should make sure the student's outline is well-structured, coherent, and effectively conveys the main ideas and contributions of the selected papers. 
 2. The student must mention all the core papers and all possible related papers in each section, but must not make up any content that is not included in the abstracts of the papers.
-3. You must provide detailed feedback on the student's outline, highlighting areas for improvement and suggesting ways to enhance the clarity, coherence, and depth of the survey. Your feedback should be specific, actionable, and focused on guiding the student towards a more comprehensive and well-organized survey paper.
+3. You must provide detailed feedback on the student's outline, highlighting areas for improvement and suggesting ways to enhance the clarity, coherence, and depth of the survey.
+4. Think critically about the arrangement of sections and the connections between papers. Your feedback should be specific, actionable, and focused on guiding the student towards a more comprehensive and well-organized survey paper.
 
-You will grade the student's outline. You are encouraged to provide detailed feedback to help the student revise and improve the outline effectively. Only give them a pass if the outline meets your high standards and expectations.
+You will grade the student's outline. Only give them a pass if the outline meets your high standards and expectations. You are encouraged to provide detailed feedback to help the student revise and improve the outline effectively.
+You must comment on the structure of the outline, ensuring that the student is on the right track to create a successful survey paper. Give general advice on how to improve the outline and then provide specific feedback on each section.
 
 ## Handout for Student's Outline Review
 
@@ -46,9 +48,10 @@ You will grade the student's outline. You are encouraged to provide detailed fee
 
 ## Grade
 
-- [ ] Pass
-- [ ] Revision Needed
-- [ ] Fail
+- [ ] Accept
+- [ ] Minor Revision
+- [ ] Major Revision
+- [ ] Reject
 
 ## Feedback
 """
@@ -79,6 +82,8 @@ You are a experienced professor and are extremely demanding and expects perfecti
 
 _section_outline_prompt = """
 You are a experienced professor preparing a survey paper. You have written the outline of the survey paper based on the papers you’ve read. You asked your colleague to review the outline and provide feedback. You should consider the feedback and start writing only the {section} section of the survey paper.
+
+You must only write the {section} section you planned to write. Do not write the entire survey paper before making sure the current section is well-written. Your writing should be based on the outline you have created and the feedback you received.
 
 Think step by step. Compare and combine the abstracts across different papers prior to writing the content. You are encouraged to find more papers related to the topic to enrich the content. You must cite the papers in your writing. The citation format should be consistent in this format: [index of the paper]. For example, if the first paper is cited, it should be written as [1].
 

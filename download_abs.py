@@ -72,8 +72,8 @@ def get_data(file_path):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Download references from a PDF file')
-    parser.add_argument('file', type=str, help='Path to the PDF file')
+    parser = argparse.ArgumentParser(description='Download papers from arXiv')
+    parser.add_argument('file', type=str, help='Path/directory to the TXT file of paper titles')
 
     args = parser.parse_args()
 
