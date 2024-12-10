@@ -15,7 +15,7 @@ from refined_paper import (
 )
 
 
-def download_and_parse(file: str) -> tuple[str, dict[int, str]]:
+def download_and_parse(file: str) -> tuple[str, dict[int, str], dict[int, str]]:
     directory = os.path.dirname(file)
     file_name = os.path.basename(file)
     file_name = file_name.split('.')[0]
@@ -28,22 +28,24 @@ def download_and_parse(file: str) -> tuple[str, dict[int, str]]:
     with open(data_file) as f:
         data = json.load(f)
 
-    abstracts = ""
+    abstracts: dict[int, str] = {}
+    abstracts_full = ""
     for i, d in enumerate(data):
         abstract = d["abstract"].replace("\n", " ")
-        abstracts += f"{i + 1}\n{d['title']}\n{abstract}\n\n"
+        abstracts[i + 1] = abstract
+        abstracts_full += f"{i + 1}\n{d['title']}\n{abstract}\n\n"
 
     contents: dict[int, str] = {}
     for i, d in enumerate(data):
         curr_content = pymupdf4llm.to_markdown(f"{pdf_dir}/{d['title']}.pdf")
         contents[i + 1] = curr_content
-    return abstracts, contents
+    return abstracts_full, abstracts, contents
 
 
 def survey_dash(topic: str, file: str) -> str:
-    abstracts, contents = download_and_parse(file)
-    final_outline, section_list = gen_survey_outline(abstracts, topic)
-    summaries = read_and_summarize_articles(contents)
+    abstracts_full, abstracts, contents = download_and_parse(file)
+    final_outline, section_list = gen_survey_outline(abstracts_full, topic)
+    summaries = read_and_summarize_articles(contents, abstracts)
     enrich_section(section_list, topic, final_outline, summaries)
     check_hallucination(contents, list(map(get_section_filename, section_list)))
     survey = edit_suggestions(section_list)

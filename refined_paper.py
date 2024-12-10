@@ -1,49 +1,27 @@
-from openai import OpenAI
-# import openai
-
-from prompts import (_outline_generation_prompt,
-                     _outline_revision_prompt,
-                     _outline_advice_prompt,
-                     _section_outline_prompt,
-                     _section_writer_prompt,
-                     _section_advice_prompt,
-                     _section_refine_prompt,
-                     _combined_section_suggestion_prompt,
-                     _check_hallucination_prompt,
-                     _gen_summarization_prompt)
-import tiktoken
 import time
-import pymupdf4llm
-import urllib.request
-import json
 import re
 import os
+import pymupdf4llm
+import tiktoken
+from openai import OpenAI
+
+from prompts import (
+    _outline_generation_prompt,
+    _outline_revision_prompt,
+    _outline_advice_prompt,
+    _section_outline_prompt,
+    _section_writer_prompt,
+    _section_refine_prompt,
+    _combined_section_suggestion_prompt,
+    _check_hallucination_prompt,
+    _gen_summarization_prompt,
+)
 
 # to be revoked
-client = OpenAI(api_key='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')
+client = OpenAI(
+    api_key='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'
+)
 
-def load_abstracts(filename):
-    with open(f'{filename}.json', 'r') as f:
-        data = json.load(f)
-    text = ""
-    for i, d in enumerate(data):
-        abstract = d['abstract'].replace("\n", ' ')
-        text += f"{i + 1}\n{d['title']}\n{abstract}\n\n"
-    return text
-
-def load_full_content(filename, pdf_directory="./reference_papers"):
-    with open(f'{filename}.json', 'r') as f:
-        data = json.load(f)
-    full_content = {}
-    need_to_download = False
-    if not os.path.exists(pdf_directory):
-        need_to_download = True
-    for i, d in enumerate(data):
-        if need_to_download:
-            urllib.request.urlretrieve(d["url"].replace("abs", "pdf"), f"{pdf_directory}/{d['title']}.pdf")
-        curr_content = pymupdf4llm.to_markdown(f"{pdf_directory}/{d['title']}.pdf")
-        full_content[i+1] = curr_content
-    return full_content
 
 def make_chat_request(client, messages, model="gpt-4o", temperature=0.3, top_p=0.5) -> str:
     try:
@@ -57,22 +35,13 @@ def make_chat_request(client, messages, model="gpt-4o", temperature=0.3, top_p=0
     except Exception as e:
         raise Exception(f"Error in OpenAI API call: {e}")
 
-# def make_chat_request(client, messages, model="gpt-4", temperature=0.3, top_p=0.5):
-
-#     try:
-#         response = openai.ChatCompletion.create(
-#             model=model,
-#             messages=messages,
-#             temperature=temperature,
-#             top_p=top_p
-#         )
-#         return response.choices[0].message['content']
-#     except Exception as e:
-#         raise Exception(f"Error in OpenAI API call: {e}")
 
 def write_to_file(filepath, content):
-    directory = os.path.dirname(filepath)
     file_name = os.path.basename(filepath)
+    directory = os.path.dirname(filepath)
+    if not directory:
+        directory = "."
+
     try:
         with open(f'{directory}/{int(time.time())}_{file_name}', 'w') as f:
             f.write(content)
@@ -81,11 +50,13 @@ def write_to_file(filepath, content):
     except IOError as e:
         raise Exception(f"Error writing to file {filepath}: {e}")
 
+
 def extract_section_titles(recent_advice):
     pattern = r"### (\d+\.\s+[A-Za-z -]+)"
     matches = re.findall(pattern, recent_advice)
     section_titles = [re.sub(r"\d+\.\s+", "", title).strip() for title in matches]
     return section_titles
+
 
 def gen_survey_outline(abstracts, topic):
     outline_generation_prompt_pt_1 = "\n".join(_outline_generation_prompt.format(topic=topic).split("\n")[2:])
@@ -166,6 +137,7 @@ def gen_survey_outline(abstracts, topic):
     write_to_file("outline.txt", final_outline)
     return final_outline, section_list
 
+
 def enrich_section(section_list: list[str], topic: str, outline: str, abstracts: dict[int, str]):
     print("Enriching Draft...")
     directory = "enriched_sections"
@@ -197,48 +169,6 @@ def get_section_filename(section):
     return section.replace(' ', '_').replace('.', '').lower()
 
 
-def gen_section_advice(section_list, directory="enriched_sections"):
-    print("Final Draft...")
-
-    refined_sections = []
-    for index in range(0, len(section_list) - 1, 2):
-        filename1 = f"{directory}/{get_section_filename(section_list[index])}.txt"
-        filename2 = f"{directory}/{get_section_filename(section_list[index+1])}.txt"
-        with open(filename1, 'r') as f:
-            file1 = f.read()
-        with open(filename2, 'r') as f:
-            file2 = f.read()
-        section_advice_msg = [
-            {
-                "role": "system",
-                "content": _section_advice_prompt.format(
-                    section1=file1,
-                    section2=file2,
-                )
-            }
-        ]
-        advice = make_chat_request(client, section_advice_msg)
-        print(advice)
-        section_refine_msg = [
-            {
-                "role": "system",
-                "content": _section_refine_prompt.format(
-                    section1=file1,
-                    section2=file2,
-                )
-            },
-            {
-                "role": "user",
-                "content": advice
-            }
-        ]
-        refinement = make_chat_request(client, section_refine_msg)
-        print(refinement)
-        refined_sections.append(refinement)
-
-    write_to_file(f"{directory}/refined_sections.txt", "\n\n".join(refined_sections))
-
-
 def edit_suggestions(section_list, directory="checked_sections"):
     print("Getting Suggestions for All Sections...")
 
@@ -258,12 +188,12 @@ def edit_suggestions(section_list, directory="checked_sections"):
 
     # Generate a single suggestion for all sections
     combined_advice = make_chat_request(client, combined_advice_msg)
-    print("Generated Combined Advice:", combined_advice)
+    write_to_file("combined_advice.txt", combined_advice)
 
     # Parse combined suggestions into a list
     parsed_suggestions = parse_suggestions(combined_advice)
-    print("parsed_suggestions", parsed_suggestions)
-    print("parsed_suggestions_length", len(parsed_suggestions))
+    # print("parsed_suggestions", parsed_suggestions)
+    # print("parsed_suggestions_length", len(parsed_suggestions))
 
     refined_sections = []
 
@@ -278,7 +208,9 @@ def edit_suggestions(section_list, directory="checked_sections"):
 
     # Write all refined sections to a new file
     output_file = f"refined_all_sections.txt"
-    output_content = "\n\n".join(refined_sections)
+    output_content = ("\n\n".join(refined_sections)
+                      .replace("Section 1: ", "")
+                      .replace("Section 2: ", ""))
     write_to_file(output_file, output_content)
 
     print(f"All edits have been saved to {output_file}")
@@ -300,7 +232,6 @@ def parse_suggestions(suggestions_text):
                 parsed_suggestions.append("\n\n".join(current_block))
                 current_block = []
 
-
             current_block.append(section)
         else:
 
@@ -312,10 +243,7 @@ def parse_suggestions(suggestions_text):
     return parsed_suggestions
 
 
-
-
 def edit_two_files(section1, section2, suggestions):
-
     print(f"Editing files: {section1}, {section2}")
     directory = "enriched_sections"
     filename1 = f"{directory}/{get_section_filename(section1)}.txt"
@@ -348,6 +276,7 @@ def edit_two_files(section1, section2, suggestions):
 
     return refinement
 
+
 def extract_reference_numbers(sentence):
     # Match references enclosed in square brackets, with ',' or ';' as separators
     match = re.search(r'\[\d+([,;\s]*\d+)*\]', sentence)
@@ -357,7 +286,9 @@ def extract_reference_numbers(sentence):
         return [int(num) for num in numbers if num.isdigit()]
     return []
 
-def check_hallucination(full_context: dict[int, str], sections: list[str], source_directory="enriched_sections", saved_directory="checked_sections"):
+
+def check_hallucination(full_context: dict[int, str], sections: list[str], source_directory="enriched_sections",
+                        saved_directory="checked_sections"):
     if not os.path.exists(f"./{saved_directory}"):
         os.makedirs(f"./{saved_directory}")
 
@@ -372,7 +303,7 @@ def check_hallucination(full_context: dict[int, str], sections: list[str], sourc
                 ref_nums = extract_reference_numbers(s)
                 tmp_s = s
                 if len(ref_nums) > 0:
-                    context = sentences[max(0, i-2):min(len(sentences), i+2)]
+                    context = sentences[max(0, i - 2):min(len(sentences), i + 2)]
                     for n in ref_nums:
                         reference_paper_content = full_context[n].split("References")[0]
                         if len(encoding.encode(reference_paper_content)) > 30000:
@@ -401,9 +332,9 @@ def check_hallucination(full_context: dict[int, str], sections: list[str], sourc
             print("Saving checked file...")
             new_paragraph = "\n".join(new_sentences)
             write_to_file(f"./{saved_directory}/{file}", new_paragraph)
-    return
 
-def read_and_summarize_articles(abstracts: dict[int, str]):
+
+def read_and_summarize_articles(abstracts: dict[int, str], fallback: dict[int, str] = None):
     print("Reading and Summarizing Articles...")
     # abstract_list = abstracts.strip().split("\n\n")
     summaries: dict[int, str] = {}
@@ -418,19 +349,25 @@ def read_and_summarize_articles(abstracts: dict[int, str]):
             # abstract_number = abstract_number.strip()
             # Simulate "reading" by analyzing content and summarizing
             abstract_text = abstracts[abstract_num].split("References")[0]
+
             if len(encoding.encode(abstract_text)) > 30000:
-                continue
-            read_and_summarize_msg = [
-                {
-                    "role": "system",
-                    "content":  _gen_summarization_prompt
-                },
-                {
-                    "role": "user",
-                    "content": abstract_text
-                }
-            ]
-            summary = make_chat_request(client, read_and_summarize_msg, temperature=0.6, top_p=0.7)
+                if not fallback or abstract_num not in fallback:
+                    continue
+                print(f"Fall back to abstract {abstract_num}")
+                summary = fallback[abstract_num]
+            else:
+                read_and_summarize_msg = [
+                    {
+                        "role": "system",
+                        "content": _gen_summarization_prompt
+                    },
+                    {
+                        "role": "user",
+                        "content": abstract_text
+                    }
+                ]
+                summary = make_chat_request(client, read_and_summarize_msg, temperature=0.6, top_p=0.7)
+
             summaries[abstract_num] = summary
             # Save each summary to a separate file
             filename = f"{directory}/abstract_{abstract_num}.txt"
@@ -439,22 +376,3 @@ def read_and_summarize_articles(abstracts: dict[int, str]):
         except Exception as e:
             print(f"Failed to process article: {abstract_num}\nError: {e}")
     return summaries
-
-if __name__ == "__main__":
-    topic = 'LLM applications in legal texts'
-    #abstracts = load_abstracts('The_Impact_of_Large_Language_Modeling_on_Natural_Language_Processing_in_Legal_Texts_A_Comprehensive_Survey.pdf')
-    # final_outline, section_list = gen_survey_outline(abstracts, topic)
-    # write_to_file("outline.txt", final_outline)
-    section_list = ["Introduction", "Domain-Specific LLMs for Legal Texts", "Multilingual and Cross-Lingual Capabilities", "Legal Reasoning and Societal Values in LLMs", "Future Directions and Ethical Considerations", "Conclusion"]
-    full_content = load_full_content('The_Impact_of_Large_Language_Modeling_on_Natural_Language_Processing_in_Legal_Texts_A_Comprehensive_Survey.pdf')
-    # abstracts = read_and_summarize_articles(full_content)
-    check_hallucination(full_content, list(map(get_section_filename, section_list)))
-    # with open('outline.txt', 'r') as f:
-        # final_outline = f.read()
-    # enrich_section(section_list, topic, final_outline, abstracts)
-
-    #method 1
-    # gen_section_advice(section_list)
-
-    #method 2
-    # edit_suggestions(section_list)
